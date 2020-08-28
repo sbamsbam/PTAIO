@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #This part of the script take a snapshot of every active web server
 read -p "Insert target an port you want to scan " target port
 nmap -A -p $port --open $target -oG nmap-scan-$target

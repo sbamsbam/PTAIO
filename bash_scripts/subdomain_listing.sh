@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 read -p "Insert the domain or the site you want to enumerate: " target
 mkdir $target
