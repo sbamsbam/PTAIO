@@ -15,8 +15,8 @@ START()
 {
 read -p "Inserisci il nome che vuoi dare al progetto: " PROJECT
 read -p "Inserisci la cartella dove vuoi salvare i risultati: " PATH 
-if [ ! -d $PATH$PROJECT ]; then
-  /usr/bin/mkdir -p $PATH$PROJECT;
+if [ ! -d $PATH/$PROJECT ]; then
+  /usr/bin/mkdir -p $PATH/$PROJECT;
 fi
 
 }
@@ -27,22 +27,22 @@ read -p  "Inserisci il CIDR della rete che vuoi scansionare: " CIDR
 
 /usr/bin/nmap -n -sn $CIDR -oG - | /usr/bin/awk '/Up$/{print $2}' >> $PATH/$PROJECT/$PROJECT.txt &&
 
-/usr/bin/python3 /root/AutoRecon/src/autorecon/autorecon.py -t $PATH/$PROJECT/$PROJECT.txt -o $PATH/$PROJECT/
+/usr/bin/python3 /root/AutoRecon/src/autorecon/autorecon.py -t $PATH/$PROJECT/$PROJECT.txt -o $PATH/$PROJECT
 
-echo "Scansione eseguita, i file sono stati salvati in $PATH/$PROJECT/"
+echo "Scansione eseguita, i file sono stati salvati in $PATH/$PROJECT"
 }
 START
 SCAN
 echo
-while true; do
+while true ; do
     read -p  "Vuoi scansionare una nuova rete? (S/N) " REPLY
     case $REPLY in
-        [Nn]* ) exit;;
+        [Nn]* ) break;;
         
         [Ss]* ) while true; do
         		        read -p  "Vuoi utilizzare lo stesso progetto? (S/N) " REPLY2
         		        case $REPLY2 in
-        			        [Ss]* ) SCAN;;
+        			        [Ss]* ) SCAN; continue;;
         			        [Nn]* ) START;;
                       * ) echo "Rispondi Si o No";;
                     esac
