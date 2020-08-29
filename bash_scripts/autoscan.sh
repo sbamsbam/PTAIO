@@ -29,7 +29,7 @@ read -p  "Inserisci il CIDR della rete che vuoi scansionare: " CIDR
 
 /usr/bin/python3 /root/AutoRecon/src/autorecon/autorecon.py -t $PATH/$PROJECT/$PROJECT.txt -o $PATH/$PROJECT
 
-echo "Scansione eseguita, i file sono stati salvati in $PATH/$PROJECT"
+echo "Scansione eseguita, i file sono stati salvati in $PATH$PROJECT"
 }
 START
 SCAN
@@ -42,7 +42,7 @@ while true ; do
         [Ss]* ) while true; do
         		        read -p  "Vuoi utilizzare lo stesso progetto? (S/N) " REPLY2
         		        case $REPLY2 in
-        			        [Ss]* ) SCAN; continue;;
+        			        [Ss]* ) SCAN;;
         			        [Nn]* ) START;;
                       * ) echo "Rispondi Si o No";;
                     esac
