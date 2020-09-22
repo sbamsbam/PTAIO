@@ -26,10 +26,10 @@ SCAN()
 read -p  "Inserisci il CIDR della rete che vuoi scansionare: " CIDR
 
 /usr/bin/nmap -n -sn $CIDR -oG - | /usr/bin/awk '/Up$/{print $2}' >> $PATH/$PROJECT/$PROJECT.txt &&
+/usr/bin/nmap -A -T5  -iL $PATH/$PROJECT/$PROJECT.txt > NMAPoutput-txt && 
+/usr/bin/python3 /root/intelspy/intelspy.py -s 5 -p $PROJECT -w $PATH/$PROJECT $CIDR &&
 
-/usr/bin/python3 /root/AutoRecon/src/autorecon/autorecon.py -t $PATH/$PROJECT/$PROJECT.txt -o $PATH/$PROJECT &&
-
-echo "Scansione eseguita, i file sono stati salvati in $PATH$PROJECT"
+echo "Scansione eseguita, i file sono stati salvati in $PATH/$PROJECT"
 }
 START
 SCAN
