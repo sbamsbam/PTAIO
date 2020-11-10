@@ -1,2 +1,2 @@
 # PTAIO
-Automated script to automate annoyng tasks in PT
+Collection of scripts to automate annoying tasks in PT + cheatsheet for OSCP
