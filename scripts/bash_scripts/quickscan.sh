@@ -20,8 +20,7 @@ esac
 done
 
 
-if [[ ${#} -lt 1 || -z ${1} || -z ${2} ]]; then echo "Usage quickscan.sh -t TARGET -o OUTPUTFILE"; fi
-exit 1
+if [[ ${#} -lt 1 || -z ${1} || -z ${2} ]]; then echo "Usage quickscan.sh -t TARGET -o OUTPUTFILE"; fi 
 #if [[ ${TARGET} ! = ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then showUsage; fi
 
 
